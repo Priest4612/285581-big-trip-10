@@ -450,7 +450,7 @@ const render = (container, template, place) => {
 const sitePageBodyElement = document.querySelector(`.page-body`);
 const siteHeaderElement = sitePageBodyElement.querySelector(`.page-header`);
 const headerTripInfoElement = siteHeaderElement.querySelector(`.trip-info`);
-const headerTripControlsElement = siteHeaderElement.querySelector('.trip-controls');
+const headerTripControlsElement = siteHeaderElement.querySelector(`.trip-controls`);
 const headerHiddenElements = headerTripControlsElement.querySelectorAll(`.visually-hidden`);
 
 render(headerTripInfoElement, createTripInfoTemplate(), `afterbegin`);
@@ -468,7 +468,7 @@ const eventListElement = mainTripEventsElement.querySelector(`.trip-days`);
 render(eventListElement, createEventEditTemplate(), `beforeend`);
 
 new Array(EVENT_COUNT).fill().forEach(
-  () => {
-    render(eventListElement, createEventTemplate(), `beforeend`);
-  }
+    () => {
+      render(eventListElement, createEventTemplate(), `beforeend`);
+    }
 );
