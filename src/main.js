@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const EVENT_COUNT = 3;
 
