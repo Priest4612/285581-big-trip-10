@@ -1,5 +1,5 @@
 export const createEventListTemplate = () => {
   return (
-    `<ul class="trip-days"></ul>`
+    `<ul class="trip-events__list"></ul>`
   );
 };
