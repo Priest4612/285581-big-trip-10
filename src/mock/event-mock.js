@@ -39,68 +39,27 @@ const generatePrice = () => {
 
 
 const generateOfferList = (array) => {
-
-  const offers = new Array(0);
+  const offerList = new Array(0);
   array.map((obj) =>{
     obj.price = generatePrice();
     obj.checked = Math.random() > 0.5;
 
-    offers.push(obj);
+    offerList.push(obj);
   });
 
-  return offers;
-};
-
-
-const generateOffers = (array) => {
-  const OFFERS_MIN_COUNT = 0;
-  const OFFERS_MAX_COUNT = 2;
-  const OFFERS_AVAILABLE_COUNT = 5;
-  const offerList = generateOfferList(array);
-
-  const createArrayList = (offers, count) => {
-    return new Array(count)
-    .fill(``)
-    .map(() => {
-      return getRandomArrayItem(offers);
-    });
-  };
-
-  const title = createArrayList(offerList, getRandomInteger(OFFERS_MIN_COUNT, OFFERS_MAX_COUNT));
-  const available = createArrayList(offerList, OFFERS_AVAILABLE_COUNT);
-
-  return (
-    {
-      offersTitle: title,
-      offersAvailable: available,
-    }
-  );
+  return offerList;
 };
 
 
 const generateEvent = () => {
-  const startEvent = getRandomDate(7);
-  const endEvent = getRandomDate(30);
-
-  const getDurationEvent = (start, end) => {
-    const duration = new Date(end - start);
-    const day = duration.getDay();
-    const hours = duration.getHours();
-    const minutes = duration.getMinutes();
-
-    return `${day > 0 ? day + `D ` : ``}${hours}H ${minutes}M`;
-  };
-
   return {
-    type: getRandomArrayItem(eventTypes),
+    type: getRandomArrayItem(eventTypes).title,
     isFavorite: Math.random() > 0.5,
-    city: getRandomArrayItem(Cities),
-    dateStart: startEvent,
-    dateEnd: endEvent,
-    duration: getDurationEvent(),
+    location: getRandomArrayItem(Cities).location,
+    dateStart: getRandomDate(7),
+    dateEnd: getRandomDate(30),
     price: generatePrice(),
-    offersTitle: generateOffers(OfferList).offersTitle,
-    offersAvailable: generateOffers(OfferList).offersAvailable,
+    offerList: generateOfferList(OfferList),
     description: generateDescription(),
     photos: generatePhotos(),
   };
