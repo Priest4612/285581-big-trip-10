@@ -18,7 +18,7 @@ export const getRandomDate = (endEvent = 30) => {
   return targetDate;
 };
 
-const castTimeFormat = (value) => {
+export const castTimeFormat = (value) => {
   return value < 10 ? `0${value}` : value;
 };
 
