@@ -33,3 +33,23 @@ export const OfferList = [
   {title: `Lunch in city`, price: 0, type: `city`, checked: false},
   {title: `Order Uber`, price: 0, type: `uber`, checked: false},
 ];
+
+export const MenuList = [
+  {title: `Table`, active: true},
+  {title: `Stats`, active: false}
+];
+
+export const FilterList = [
+  {
+    title: `everything`,
+    checked: true,
+  },
+  {
+    title: `future`,
+    checked: false,
+  },
+  {
+    title: `past`,
+    checked: false,
+  }
+];
