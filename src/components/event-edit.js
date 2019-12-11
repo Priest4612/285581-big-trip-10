@@ -1,24 +1,30 @@
-import {TransferList, ActivityList} from '../const.js';
 import {formatDateTime, getRandomArrayItem} from '../utils.js';
 
 
-const templateListMarkup = (dataList, cb) => {
-  const arr = dataList.filter((it) => !it.checked);
+const templateListMarkup = (cb, dataList, group = ``) => {
+  let array = [];
+
+  if (group !== ``) {
+    const tempArray = dataList.filter((it) => it.group === group);
+    array = array.concat(tempArray);
+  } else {
+    array.concat(dataList);
+  }
 
   return Array
-  .from(arr)
+  .from(array)
   .map((item) => {
     return cb(item);
   }).join(`\n`);
 };
 
 
-const createEventItem = (eventType) => {
+const createEventItem = (event) => {
   return (
     `<div class="event__type-item">
-      <input id="event-type-${eventType.title}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${eventType.title}"
-      ${eventType.title.checked ? `cheched` : ``}>
-      <label class="event__type-label  event__type-label--${eventType.title}" for="event-type-${eventType.title}-1">${eventType.title[0].toUpperCase() + eventType.title.slice(1)}</label>
+      <input id="event-type-${event.type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${event.type}"
+      ${event.checked ? `checked` : ``}>
+      <label class="event__type-label  event__type-label--${event.type}" for="event-type-${event.type}-1">${event.title[0].toUpperCase() + event.title.slice(1)}</label>
     </div>`
   );
 };
@@ -90,7 +96,7 @@ export const createEventEditTemplate = (event) => {
           <div class="event__type-wrapper">
             <label class="event__type  event__type-btn" for="event-type-toggle-1">
               <span class="visually-hidden">Choose event type</span>
-              <img class="event__type-icon" width="17" height="17" src="img/icons/${activeEvent.title}.png" alt="Event type icon">
+              <img class="event__type-icon" width="17" height="17" src="img/icons/${activeEvent.type}.png" alt="Event type icon">
             </label>
             <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
@@ -98,14 +104,14 @@ export const createEventEditTemplate = (event) => {
               <fieldset class="event__type-group">
                 <legend class="visually-hidden">Transfer</legend>
 
-                ${templateListMarkup(TransferList, createEventItem)}
+                ${templateListMarkup(createEventItem, eventList, `transfer`)}
 
               </fieldset>
 
               <fieldset class="event__type-group">
                 <legend class="visually-hidden">Activity</legend>
 
-                ${templateListMarkup(ActivityList, createEventItem)}
+                ${templateListMarkup(createEventItem, eventList, `activity`)}
 
               </fieldset>
             </div>
@@ -117,7 +123,7 @@ export const createEventEditTemplate = (event) => {
             </label>
             <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${activeLocationList.title}" list="destination-list-1">
             <datalist id="destination-list-1">
-              ${templateListMarkup(locationList, createCityItem)}
+              ${templateListMarkup(createCityItem, locationList)}
             </datalist>
           </div>
 
