@@ -10,10 +10,20 @@ import {createEventListTemplate} from './components/event-list.js';
 import {createEventEditTemplate} from './components/event-edit.js';
 import {createEventTemplate} from './components/event.js';
 import {generateEvents} from './mock/event-mock.js';
-import {total} from './mock/event-mock.js';
+
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
+};
+
+
+const costTotal = (array) => {
+  let total = 0;
+  array.forEach((it) => {
+    total += it.price;
+  });
+
+  return total;
 };
 
 
@@ -43,6 +53,7 @@ render(dayElement, createEventListTemplate(), `beforeend`);
 const eventListElement = dayElement.querySelector(`.trip-events__list`);
 const eventList = generateEvents(EVENT_COUNT);
 
-spanTripInfoElement.innerHTML = total;
+
+spanTripInfoElement.innerHTML = costTotal(eventList);
 render(eventListElement, createEventEditTemplate(eventList[0]), `beforeend`);
 eventList.slice(1).forEach((event) => render(eventListElement, createEventTemplate(event), `beforeend`));
