@@ -35,7 +35,7 @@ const generatePriceElements = (array) => {
 
   const newArray = [];
 
-  Array.from(array).map((obj) => {
+  array.forEach((obj) => {
     obj.price = getRandomInteger(PRICE_MIN, PRICE_MAX);
     newArray.push(obj);
   });
@@ -48,11 +48,13 @@ const generateActiveElements = (array, count) => {
   const lastIteration = array.length - count;
   let offerCount = count;
 
-  Array.from(array).map((obj, index) =>{
+  array.forEach((obj, index) =>{
     const active = Math.random() > 0.7;
     if (active && offerCount > 0 || lastIteration === index && offerCount > 0) {
       obj.checked = true;
       offerCount = offerCount - 1;
+    } else {
+      obj.checked = false;
     }
     newArray.push(obj);
   });
@@ -72,10 +74,23 @@ const сalculationСostEvent = (offers, events) => {
   return cost;
 };
 
-let total = 0;
+
+const groupEvent = (array, group) => {
+  const newArray = [];
+
+  array.forEach((obj) =>{
+    obj.group = group;
+    newArray.push(obj);
+  });
+  return newArray;
+};
+
 
 const generateEvent = () => {
-  const sourceEventList = cloneArray(TransferList.concat(ActivityList));
+  const transfer = groupEvent(cloneArray(TransferList), `transfer`);
+  const activities = groupEvent(cloneArray(ActivityList), `activity`);
+
+  const sourceEventList = transfer.concat(activities);
   const currentOfferList = cloneArray(OfferList);
   const currentCityList = cloneArray(Cities);
 
@@ -87,7 +102,6 @@ const generateEvent = () => {
 
   const cityList = generateActiveElements(currentCityList, 1);
   const costEvent = сalculationСostEvent(activeOfferList, eventList);
-  total = total + costEvent;
 
   return {
     eventList,
@@ -104,10 +118,9 @@ const generateEvent = () => {
 
 
 const generateEvents = (count) => {
-  total = 0;
   return new Array(count)
   .fill(``)
   .map(generateEvent);
 };
 
-export {generateEvent, generateEvents, total};
+export {generateEvent, generateEvents};
