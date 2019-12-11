@@ -31,11 +31,31 @@ export const formatTime = (date) => {
 };
 
 export const formatDateTime = (date) => {
-  const yy = String(date.getYear()).slice(2);
+  const yy = String(date.getYear()).slice(1);
   const mm = castTimeFormat(date.getMonth() + 1);
   const dd = castTimeFormat(date.getDate());
   const hours = castTimeFormat(date.getHours());
   const minutes = castTimeFormat(date.getMinutes());
 
   return `${dd}/${mm}/${yy} ${hours}:${minutes}`;
+};
+
+const isObject = (object) => {
+  const type = typeof object;
+  return type === `function` || type === `object`;
+};
+
+export const cloneArray = (source) => {
+  const clone = [];
+
+  for (const key in source) {
+    if (source.hasOwnProperty(key)) {
+      if (isObject(source[key])) {
+        clone[key] = cloneArray(source[key]);
+      } else {
+        clone[key] = source[key];
+      }
+    }
+  }
+  return clone;
 };
