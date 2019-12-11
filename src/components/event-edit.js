@@ -1,5 +1,17 @@
-import {TransferList, ActivityList, Cities} from '../const.js';
-import {formatDateTime} from '../utils.js';
+import {TransferList, ActivityList} from '../const.js';
+import {formatDateTime, getRandomArrayItem} from '../utils.js';
+
+
+const templateListMarkup = (dataList, cb) => {
+  const arr = dataList.filter((it) => !it.checked);
+
+  return Array
+  .from(arr)
+  .map((item) => {
+    return cb(item);
+  }).join(`\n`);
+};
+
 
 const createEventItem = (eventType) => {
   return (
@@ -12,39 +24,10 @@ const createEventItem = (eventType) => {
 };
 
 
-const eventListMarkup = (eventList, currentEvent) => {
-  const arr = eventList.slice();
-  arr.map((event) => {
-    if (event.title === currentEvent) {
-      event.checked = true;
-    } else {
-      event.checked = false;
-    }
-  });
-
-  return Array
-  .from(arr)
-  .map((eventType) => {
-    return createEventItem(eventType);
-  }).join(`\n`);
-};
-
 const createCityItem = (city) => {
   return (
-    `<option value="${city}"></option>`
+    `<option value="${city.title}"></option>`
   );
-};
-
-const destinationListMarkup = (locationList, currentLocation) => {
-  const arr = locationList
-  .slice()
-  .filter((location) => location !== currentLocation);
-
-  return Array
-  .from(arr)
-  .map((eventType) => {
-    return createCityItem(eventType);
-  }).join(`\n`);
 };
 
 
@@ -64,9 +47,15 @@ const createOfferItem = (offer) => {
 
 const offerListMarkup = (offerList) => {
   const OFFERS_AVAILABLE_COUNT = 5;
+  const newArray = offerList.filter((it) => it.checked);
+
+  for (let index = newArray.length; index < OFFERS_AVAILABLE_COUNT; index++) {
+    const element = getRandomArrayItem(offerList.filter((it) => !it.checked));
+    newArray.push(element);
+  }
 
   return Array
-  .from(offerList.slice(0, OFFERS_AVAILABLE_COUNT))
+  .from(newArray)
   .map((offer) => {
     return createOfferItem(offer);
   }).join(`\n`);
@@ -90,7 +79,9 @@ const photoListMarkup = (urlPhotoList) => {
 
 
 export const createEventEditTemplate = (event) => {
-  const {type, isFavorite, location, dateStart, dateEnd, price, offerList, description, photos} = event;
+  const {eventList, isFavorite, locationList, dateStart, dateEnd, price, offerList, description, photos} = event;
+  const activeEvent = eventList.filter((it) => it.checked)[0];
+  const activeLocationList = locationList.filter((it) => it.checked)[0];
 
   return (
     `<li class="trip-events__item">
@@ -99,7 +90,7 @@ export const createEventEditTemplate = (event) => {
           <div class="event__type-wrapper">
             <label class="event__type  event__type-btn" for="event-type-toggle-1">
               <span class="visually-hidden">Choose event type</span>
-              <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
+              <img class="event__type-icon" width="17" height="17" src="img/icons/${activeEvent.title}.png" alt="Event type icon">
             </label>
             <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
@@ -107,14 +98,14 @@ export const createEventEditTemplate = (event) => {
               <fieldset class="event__type-group">
                 <legend class="visually-hidden">Transfer</legend>
 
-                ${eventListMarkup(TransferList)}
+                ${templateListMarkup(TransferList, createEventItem)}
 
               </fieldset>
 
               <fieldset class="event__type-group">
                 <legend class="visually-hidden">Activity</legend>
 
-                ${eventListMarkup(ActivityList)}
+                ${templateListMarkup(ActivityList, createEventItem)}
 
               </fieldset>
             </div>
@@ -124,9 +115,9 @@ export const createEventEditTemplate = (event) => {
             <label class="event__label  event__type-output" for="event-destination-1">
               Sightseeing at
             </label>
-            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${location}" list="destination-list-1">
+            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${activeLocationList.title}" list="destination-list-1">
             <datalist id="destination-list-1">
-              ${destinationListMarkup(Cities)}
+              ${templateListMarkup(locationList, createCityItem)}
             </datalist>
           </div>
 

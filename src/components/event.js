@@ -1,4 +1,3 @@
-import {getRandomInteger} from '../utils.js';
 import {formatTime} from '../utils.js';
 import {castTimeFormat} from '../utils.js';
 
@@ -24,26 +23,25 @@ const createOfferItem = (offer) => {
 
 
 const offerListMarkup = (offerList) => {
-  const OFFERS_MIN_COUNT = 0;
-  const OFFERS_MAX_COUNT = 2;
-
   return Array
-  .from(offerList.slice(0, getRandomInteger(OFFERS_MIN_COUNT, OFFERS_MAX_COUNT)))
+  .from(offerList.filter((it) => it.checked))
   .map((offer) => {
     return createOfferItem(offer);
   }).join(`\n`);
 };
 
 export const createEventTemplate = (event) => {
-  const {type, location, dateStart, dateEnd, price, offerList} = event;
+  const {eventList, locationList, dateStart, dateEnd, price, offerList} = event;
+  const activeEvent = eventList.filter((it) => it.checked)[0];
+  const activeLocationList = locationList.filter((it) => it.checked)[0];
 
   return (
     `<li class="trip-events__item">
       <div class="event">
         <div class="event__type">
-          <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
+          <img class="event__type-icon" width="42" height="42" src="img/icons/${activeEvent.title}.png" alt="Event type icon">
         </div>
-        <h3 class="event__title">${type} to ${location}</h3>
+        <h3 class="event__title">${activeEvent.title} to ${activeLocationList.title}</h3>
 
         <div class="event__schedule">
           <p class="event__time">
