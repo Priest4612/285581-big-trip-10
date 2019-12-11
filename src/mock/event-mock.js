@@ -1,7 +1,6 @@
 import {Cities, OfferList, TransferList, ActivityList} from '../const.js';
-import {getRandomInteger, getRandomArrayItem, getRandomDate} from '../utils.js';
+import {getRandomInteger, getRandomArrayItem, getRandomDate, cloneArray} from '../utils.js';
 
-const eventTypes = TransferList.concat(ActivityList);
 
 const generateDescription = () => {
   const DescriptionText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra. Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum. Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui. Sed sed nisi sed augue convallis suscipit in sed felis. Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.`;
@@ -30,36 +29,74 @@ const generatePhotos = () => {
 };
 
 
-const generatePrice = () => {
+const generatePriceElements = (array) => {
   const PRICE_MIN = 5;
   const PRICE_MAX = 1000;
 
-  return getRandomInteger(PRICE_MIN, PRICE_MAX);
-};
+  const newArray = [];
 
-
-const generateOfferList = (array) => {
-  const offerList = new Array(0);
-  array.map((obj) =>{
-    obj.price = generatePrice();
-    obj.checked = Math.random() > 0.5;
-
-    offerList.push(obj);
+  Array.from(array).map((obj) => {
+    obj.price = getRandomInteger(PRICE_MIN, PRICE_MAX);
+    newArray.push(obj);
   });
-
-  return offerList;
+  return newArray;
 };
 
+const generateActiveElements = (array, count) => {
+  const newArray = [];
+
+  const lastIteration = array.length - count;
+  let offerCount = count;
+
+  Array.from(array).map((obj, index) =>{
+    const active = Math.random() > 0.7;
+    if (active && offerCount > 0 || lastIteration === index && offerCount > 0) {
+      obj.checked = true;
+      offerCount = offerCount - 1;
+    }
+    newArray.push(obj);
+  });
+  return newArray;
+};
+
+
+const сalculationСostEvent = (offers, events) => {
+  let cost = events.filter((it) => it.checked)[0].price;
+
+  for (const iterator of offers) {
+    if (iterator.checked) {
+      cost = cost + iterator.price;
+    }
+  }
+
+  return cost;
+};
+
+let total = 0;
 
 const generateEvent = () => {
+  const sourceEventList = cloneArray(TransferList.concat(ActivityList));
+  const currentOfferList = cloneArray(OfferList);
+  const currentCityList = cloneArray(Cities);
+
+  const OFFER_MIN_COUNT = 0;
+  const OFFER_MAX_COUNT = 2;
+
+  const eventList = generateActiveElements(generatePriceElements(sourceEventList), 1);
+  const activeOfferList = generateActiveElements(generatePriceElements(currentOfferList), getRandomInteger(OFFER_MIN_COUNT, OFFER_MAX_COUNT));
+
+  const cityList = generateActiveElements(currentCityList, 1);
+  const costEvent = сalculationСostEvent(activeOfferList, eventList);
+  total = total + costEvent;
+
   return {
-    type: getRandomArrayItem(eventTypes).title,
+    eventList,
     isFavorite: Math.random() > 0.5,
-    location: getRandomArrayItem(Cities).location,
+    locationList: cityList,
     dateStart: getRandomDate(7),
     dateEnd: getRandomDate(30),
-    price: generatePrice(),
-    offerList: generateOfferList(OfferList),
+    price: costEvent,
+    offerList: activeOfferList,
     description: generateDescription(),
     photos: generatePhotos(),
   };
@@ -67,9 +104,10 @@ const generateEvent = () => {
 
 
 const generateEvents = (count) => {
+  total = 0;
   return new Array(count)
   .fill(``)
   .map(generateEvent);
 };
 
-export {generateEvent, generateEvents};
+export {generateEvent, generateEvents, total};
