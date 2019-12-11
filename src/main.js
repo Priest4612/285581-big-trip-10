@@ -1,4 +1,4 @@
-const EVENT_COUNT = 3;
+const EVENT_COUNT = 4;
 
 import {createTripInfoTemplate} from './components/trip-info.js';
 import {createSiteMenuTemplate} from './components/site-menu.js';
@@ -9,6 +9,8 @@ import {createDayTemplate} from './components/day.js';
 import {createEventListTemplate} from './components/event-list.js';
 import {createEventEditTemplate} from './components/event-edit.js';
 import {createEventTemplate} from './components/event.js';
+import {generateEvents} from './mock/event-mock.js';
+import {total} from './mock/event-mock.js';
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -19,6 +21,8 @@ const sitePageBodyElement = document.querySelector(`.page-body`);
 const siteHeaderElement = sitePageBodyElement.querySelector(`.page-header`);
 
 const headerTripInfoElement = siteHeaderElement.querySelector(`.trip-info`);
+const spanTripInfoElement = headerTripInfoElement.querySelector(`.trip-info__cost-value`);
+
 const headerTripControlsElement = siteHeaderElement.querySelector(`.trip-controls`);
 const headerHiddenElements = headerTripControlsElement.querySelectorAll(`.visually-hidden`);
 render(headerTripInfoElement, createTripInfoTemplate(), `afterbegin`);
@@ -37,9 +41,8 @@ const dayElement = dayListElement.querySelector(`.day`);
 render(dayElement, createEventListTemplate(), `beforeend`);
 
 const eventListElement = dayElement.querySelector(`.trip-events__list`);
-render(eventListElement, createEventEditTemplate(), `beforeend`);
-new Array(EVENT_COUNT).fill().forEach(
-    () => {
-      render(eventListElement, createEventTemplate(), `beforeend`);
-    }
-);
+const eventList = generateEvents(EVENT_COUNT);
+
+spanTripInfoElement.innerHTML = total;
+render(eventListElement, createEventEditTemplate(eventList[0]), `beforeend`);
+eventList.slice(1).forEach((event) => render(eventListElement, createEventTemplate(event), `beforeend`));
