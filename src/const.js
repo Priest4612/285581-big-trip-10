@@ -1,24 +1,24 @@
 export const TransferList = [
-  {title: `taxi`, checked: false},
-  {title: `bus`, checked: false},
-  {title: `train`, checked: false},
-  {title: `ship`, checked: false},
-  {title: `transport`, checked: false},
-  {title: `drive`, checked: false},
-  {title: `flight`, checked: false}
+  {title: `taxi`, checked: false, price: 0},
+  {title: `bus`, checked: false, price: 0},
+  {title: `train`, checked: false, price: 0},
+  {title: `ship`, checked: false, price: 0},
+  {title: `transport`, checked: false, price: 0},
+  {title: `drive`, checked: false, price: 0},
+  {title: `flight`, checked: false, price: 0},
 ];
 
 export const ActivityList = [
-  {title: `check-in`, checked: false},
-  {title: `restaurant`, checked: false},
-  {title: `sightseeing`, checked: false},
+  {title: `check-in`, checked: false, price: 0},
+  {title: `restaurant`, checked: false, price: 0},
+  {title: `sightseeing`, checked: false, price: 0},
 ];
 
 export const Cities = [
-  {location: `Saint Petersburg`, checked: true},
-  {location: `Amsterdam`, checked: false},
-  {location: `Geneva`, checked: false},
-  {location: `Chamonix`, checked: false},
+  {title: `Saint Petersburg`, checked: false},
+  {title: `Amsterdam`, checked: false},
+  {title: `Geneva`, checked: false},
+  {title: `Chamonix`, checked: false},
 ];
 
 export const OfferList = [
