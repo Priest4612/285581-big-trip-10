@@ -17,10 +17,10 @@ const render = (container, template, place) => {
 };
 
 
-const costTotal = (array) => {
+const costTotal = (eventList) => {
   let total = 0;
-  array.forEach((it) => {
-    total += it.price;
+  eventList.forEach((event) => {
+    total += event.price;
   });
 
   return total;

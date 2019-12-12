@@ -11,7 +11,7 @@ const createFilterItem = (filterItem) => {
 };
 
 
-const filterListMurkup = (filterList) => {
+const createFilterListMurkup = (filterList) => {
   return Array
   .from(filterList)
   .map((filterItem) => {
@@ -24,7 +24,7 @@ export const createFilterTemplate = () => {
   return (
     `<form class="trip-filters" action="#" method="get">
 
-      ${filterListMurkup(FilterList)}
+      ${createFilterListMurkup(FilterList)}
 
       <button class="visually-hidden" type="submit">Accept filter</button>
     </form>`

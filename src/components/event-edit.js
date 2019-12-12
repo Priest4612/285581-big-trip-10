@@ -1,7 +1,7 @@
 import {formatDateTime, getRandomArrayItem} from '../utils.js';
 
 
-const templateListMarkup = (cb, dataList, group = ``) => {
+const createtemplateListMarkup = (cb, dataList, group = ``) => {
   let array = [];
 
   if (group !== ``) {
@@ -13,9 +13,8 @@ const templateListMarkup = (cb, dataList, group = ``) => {
 
   return Array
   .from(array)
-  .map((item) => {
-    return cb(item);
-  }).join(`\n`);
+  .map((item) => cb(item))
+  .join(`\n`);
 };
 
 
@@ -51,7 +50,7 @@ const createOfferItem = (offer) => {
 };
 
 
-const offerListMarkup = (offerList) => {
+const createOfferListMarkup = (offerList) => {
   const OFFERS_AVAILABLE_COUNT = 5;
   const newArray = offerList.filter((it) => it.checked);
 
@@ -62,9 +61,8 @@ const offerListMarkup = (offerList) => {
 
   return Array
   .from(newArray)
-  .map((offer) => {
-    return createOfferItem(offer);
-  }).join(`\n`);
+  .map((offer) => createOfferItem(offer))
+  .join(`\n`);
 };
 
 
@@ -75,12 +73,10 @@ const createPhotoItem = (urlPhoto) => {
 };
 
 
-const photoListMarkup = (urlPhotoList) => {
-  return Array
-  .from(urlPhotoList)
-  .map((urlPhoto) =>{
-    return createPhotoItem(urlPhoto);
-  }).join(`\n`);
+const createPhotoListMarkup = (urlPhotoList) => {
+  return Array.from(urlPhotoList)
+  .map((urlPhoto) => createPhotoItem(urlPhoto))
+  .join(`\n`);
 };
 
 
@@ -104,14 +100,14 @@ export const createEventEditTemplate = (event) => {
               <fieldset class="event__type-group">
                 <legend class="visually-hidden">Transfer</legend>
 
-                ${templateListMarkup(createEventItem, eventList, `transfer`)}
+                ${createtemplateListMarkup(createEventItem, eventList, `transfer`)}
 
               </fieldset>
 
               <fieldset class="event__type-group">
                 <legend class="visually-hidden">Activity</legend>
 
-                ${templateListMarkup(createEventItem, eventList, `activity`)}
+                ${createtemplateListMarkup(createEventItem, eventList, `activity`)}
 
               </fieldset>
             </div>
@@ -123,7 +119,7 @@ export const createEventEditTemplate = (event) => {
             </label>
             <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${activeLocationList.title}" list="destination-list-1">
             <datalist id="destination-list-1">
-              ${templateListMarkup(createCityItem, locationList)}
+              ${createtemplateListMarkup(createCityItem, locationList)}
             </datalist>
           </div>
 
@@ -171,7 +167,7 @@ export const createEventEditTemplate = (event) => {
 
             <div class="event__available-offers">
 
-              ${offerListMarkup(offerList)}
+              ${createOfferListMarkup(offerList)}
 
             </div>
           </section>
@@ -183,7 +179,7 @@ export const createEventEditTemplate = (event) => {
             <div class="event__photos-container">
               <div class="event__photos-tape">
 
-                ${photoListMarkup(photos)}
+                ${createPhotoListMarkup(photos)}
 
               </div>
             </div>

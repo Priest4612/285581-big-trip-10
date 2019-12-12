@@ -7,7 +7,7 @@ const createMenuItem = (menuItem) => {
 };
 
 
-const menuListMurkup = (menuList) => {
+const createMenuListMurkup = (menuList) => {
   return Array
   .from(menuList)
   .map((menuItem) => {
@@ -20,7 +20,7 @@ export const createSiteMenuTemplate = () => {
   return (
     `<nav class="trip-controls__trip-tabs  trip-tabs">
 
-      ${menuListMurkup(MenuList)}
+      ${createMenuListMurkup(MenuList)}
 
     </nav>`
   );

@@ -22,7 +22,7 @@ const createOfferItem = (offer) => {
 };
 
 
-const offerListMarkup = (offerList) => {
+const createOfferListMarkup = (offerList) => {
   return Array
   .from(offerList.filter((it) => it.checked))
   .map((offer) => {
@@ -59,7 +59,7 @@ export const createEventTemplate = (event) => {
         <h4 class="visually-hidden">Offers:</h4>
         <ul class="event__selected-offers">
 
-          ${offerListMarkup(offerList)}
+          ${createOfferListMarkup(offerList)}
 
         </ul>
 
