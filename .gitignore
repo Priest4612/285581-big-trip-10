@@ -17,3 +17,6 @@ build/
 # Файлы сборки
 public/bundle.js
 public/bundle.js.map
+
+# Файлы отладки
+src/debugger
