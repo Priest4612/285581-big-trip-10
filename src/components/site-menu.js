@@ -1,4 +1,6 @@
 import {MenuList} from '../const.js';
+import {createElement} from "../utils";
+
 
 const createMenuItem = (menuItem) => {
   return (
@@ -16,12 +18,32 @@ const createMenuListMurkup = (menuList) => {
 };
 
 
-export const createSiteMenuTemplate = () => {
+const createSiteMenuTemplate = () => {
   return (
     `<nav class="trip-controls__trip-tabs  trip-tabs">
-
       ${createMenuListMurkup(MenuList)}
-
     </nav>`
   );
 };
+
+export default class MenuElement {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createSiteMenuTemplate();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

@@ -1,4 +1,6 @@
-const createDateTemplate = () => {
+import {createElement} from "../utils";
+
+const createDateMarkup = () => {
   return (
     `<div class="day__info">
       <span class="day__counter">1</span>
@@ -7,10 +9,33 @@ const createDateTemplate = () => {
   );
 };
 
-export const createDayTemplate = () => {
+const createDayTemplate = () => {
   return (
     `<li class="trip-days__item  day">
-      ${createDateTemplate()}
+      ${createDateMarkup()}
     </li>`
   );
 };
+
+
+export default class DayItem {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createDayTemplate();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

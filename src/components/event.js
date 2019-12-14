@@ -1,5 +1,6 @@
 import {formatTime} from '../utils.js';
 import {castTimeFormat} from '../utils.js';
+import {createElement} from '../utils.js';
 
 const getDurationEvent = (start, end) => {
   const duration = new Date(end - start);
@@ -30,7 +31,8 @@ const createOfferListMarkup = (offerList) => {
   }).join(`\n`);
 };
 
-export const createEventTemplate = (event) => {
+
+const createEventTemplate = (event) => {
   const {eventList, locationList, dateStart, dateEnd, price, offerList} = event;
   const activeEvent = eventList.filter((it) => it.checked)[0];
   const activeLocationList = locationList.filter((it) => it.checked)[0];
@@ -70,3 +72,27 @@ export const createEventTemplate = (event) => {
     </li>`
   );
 };
+
+
+export default class EventElement {
+  constructor(event) {
+    this._event = event;
+
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEventTemplate(this._event);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
