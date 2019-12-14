@@ -123,4 +123,4 @@ const generateEvents = (count) => {
   .map(generateEvent);
 };
 
-export {generateEvent, generateEvents};
+export {generateEvents};
