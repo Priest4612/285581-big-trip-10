@@ -1,18 +1,15 @@
-import {createTripInfoTemplate} from './components/trip-info.js';
-import {createSiteMenuTemplate} from './components/site-menu.js';
-import {createFilterTemplate} from './components/filter.js';
-import {createSortTemplate} from './components/sort.js';
-import {createDayListTemplate} from './components/day-list.js';
-import {createDayTemplate} from './components/day.js';
-import {createEventListTemplate} from './components/event-list.js';
-import {createEventEditTemplate} from './components/event-edit.js';
-import {createEventTemplate} from './components/event.js';
+import TripInfoElement from './components/trip-info.js';
+import MenuElement from './components/site-menu.js';
+import FilterElement from './components/filter.js';
+import SortElement from './components/sort.js';
+import DayListElement from './components/day-list.js';
+import DayItem from './components/day.js';
+import EventContainer from './components/event-list.js';
+import EventEditElement from './components/event-edit.js';
+import EventElement from './components/event.js';
 import {data} from './mock/data.js';
-
-
-const render = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
-};
+import {render} from './utils.js';
+import {RenderPosition} from './utils.js';
 
 
 const costTotal = (eventList) => {
@@ -25,6 +22,47 @@ const costTotal = (eventList) => {
 };
 
 
+const renderEvent = (eventListElement, event) => {
+  const replaceEditToEvent = () => {
+    eventListElement.replaceChild(eventElement.getElement(), eventEditElement.getElement());
+  };
+
+
+  const replaceEventToEdit = () => {
+    eventListElement.replaceChild(eventEditElement.getElement(), eventElement.getElement());
+  };
+
+
+  const onEscKeyDown = (evt) => {
+    const isEscKey = evt.key === `Escape` || evt.kay === `Esc`;
+    if (isEscKey) {
+      replaceEditToEvent();
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    }
+  };
+
+
+  const eventElement = new EventElement(event);
+  const openEditButton = eventElement.getElement().querySelector(`.event__rollup-btn`);
+
+  openEditButton.addEventListener(`click`, () => {
+    replaceEventToEdit();
+    document.addEventListener(`keydown`, onEscKeyDown);
+  });
+
+  const eventEditElement = new EventEditElement(event);
+  const closeEditButton = eventEditElement.getElement().querySelector(`.event__rollup-btn`);
+
+  closeEditButton.addEventListener(`click`, () => {
+    replaceEditToEvent();
+    document.addEventListener(`keydown`, onEscKeyDown);
+  });
+
+  eventEditElement.getElement().addEventListener(`submit`, replaceEditToEvent);
+
+  render(eventListElement, eventElement.getElement(), RenderPosition.BEFOREEND);
+};
+
 const sitePageBodyElement = document.querySelector(`.page-body`);
 const siteHeaderElement = sitePageBodyElement.querySelector(`.page-header`);
 
@@ -33,24 +71,24 @@ const spanTripInfoElement = headerTripInfoElement.querySelector(`.trip-info__cos
 
 const headerTripControlsElement = siteHeaderElement.querySelector(`.trip-controls`);
 const headerHiddenElements = headerTripControlsElement.querySelectorAll(`.visually-hidden`);
-render(headerTripInfoElement, createTripInfoTemplate(), `afterbegin`);
-render(headerHiddenElements[0], createSiteMenuTemplate(), `afterend`);
-render(headerHiddenElements[1], createFilterTemplate(), `afterend`);
+render(headerTripInfoElement, new TripInfoElement().getElement(), RenderPosition.AFTERBEGIN);
+render(headerHiddenElements[0], new MenuElement().getElement(), RenderPosition.AFTEREND);
+render(headerHiddenElements[1], new FilterElement().getElement(), RenderPosition.AFTEREND);
 
 const siteMainElement = sitePageBodyElement.querySelector(`.page-main`);
 const mainTripEventsElement = siteMainElement.querySelector(`.trip-events`);
-render(mainTripEventsElement, createSortTemplate(), `beforeend`);
-render(mainTripEventsElement, createDayListTemplate(), `beforeend`);
+render(mainTripEventsElement, new SortElement().getElement(), RenderPosition.BEFOREEND);
+render(mainTripEventsElement, new DayListElement().getElement(), RenderPosition.BEFOREEND);
 
 const dayListElement = mainTripEventsElement.querySelector(`.trip-days`);
-render(dayListElement, createDayTemplate(), `beforeend`);
+render(dayListElement, new DayItem().getElement(), RenderPosition.BEFOREEND);
 
 const dayElement = dayListElement.querySelector(`.day`);
-render(dayElement, createEventListTemplate(), `beforeend`);
+render(dayElement, new EventContainer().getElement(), RenderPosition.BEFOREEND);
 
 const eventListElement = dayElement.querySelector(`.trip-events__list`);
 const eventList = data;
 
+eventList.forEach((event) => renderEvent(eventListElement, event));
+
 spanTripInfoElement.innerHTML = costTotal(eventList);
-render(eventListElement, createEventEditTemplate(eventList[0]), `beforeend`);
-eventList.slice(1).forEach((event) => render(eventListElement, createEventTemplate(event), `beforeend`));
