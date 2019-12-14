@@ -1,5 +1,3 @@
-const EVENT_COUNT = 4;
-
 import {createTripInfoTemplate} from './components/trip-info.js';
 import {createSiteMenuTemplate} from './components/site-menu.js';
 import {createFilterTemplate} from './components/filter.js';
@@ -9,7 +7,7 @@ import {createDayTemplate} from './components/day.js';
 import {createEventListTemplate} from './components/event-list.js';
 import {createEventEditTemplate} from './components/event-edit.js';
 import {createEventTemplate} from './components/event.js';
-import {generateEvents} from './mock/event-mock.js';
+import {data} from './mock/data.js';
 
 
 const render = (container, template, place) => {
@@ -51,8 +49,7 @@ const dayElement = dayListElement.querySelector(`.day`);
 render(dayElement, createEventListTemplate(), `beforeend`);
 
 const eventListElement = dayElement.querySelector(`.trip-events__list`);
-const eventList = generateEvents(EVENT_COUNT);
-
+const eventList = data;
 
 spanTripInfoElement.innerHTML = costTotal(eventList);
 render(eventListElement, createEventEditTemplate(eventList[0]), `beforeend`);
