@@ -1,4 +1,4 @@
-import {formatDateTime, getRandomArrayItem} from '../utils.js';
+import {formatDateTime, getRandomArrayItem, createElement} from '../utils.js';
 
 
 const createtemplateListMarkup = (cb, dataList, group = ``) => {
@@ -189,3 +189,26 @@ export const createEventEditTemplate = (event) => {
     </li>`
   );
 };
+
+
+export default class EventEditElement {
+  constructor(event) {
+    this._event = event;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEventEditTemplate(this._event);
+  }
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

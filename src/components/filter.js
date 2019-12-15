@@ -1,4 +1,5 @@
 import {FilterList} from '../const.js';
+import {createElement} from '../utils.js';
 
 const createFilterItem = (filterItem) => {
   return (
@@ -25,7 +26,7 @@ const createFilterListMurkup = (filterList) => {
 };
 
 
-export const createFilterTemplate = () => {
+const createFilterTemplate = () => {
   return (
     `<form class="trip-filters" action="#" method="get">
 
@@ -35,3 +36,25 @@ export const createFilterTemplate = () => {
     </form>`
   );
 };
+
+export default class FilterElement {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilterTemplate();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
