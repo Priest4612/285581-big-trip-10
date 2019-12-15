@@ -1,6 +1,7 @@
 import {generateEvents} from './event-mock.js';
 
-const EVENT_COUNT = 4;
+const EVENT_COUNT = Math.random() > 0.2 ? 0 : 20;
+
 const data = generateEvents(EVENT_COUNT);
 
 export {data};
