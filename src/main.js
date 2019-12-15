@@ -10,6 +10,7 @@ import EventElement from './components/event.js';
 import {data} from './mock/data.js';
 import {render} from './utils.js';
 import {RenderPosition} from './utils.js';
+import NoEventElement from './components/no-event.js';
 
 
 const costTotal = (eventList) => {
@@ -46,6 +47,7 @@ const renderEvent = (eventListElement, event) => {
   const openEditButton = eventElement.getElement().querySelector(`.event__rollup-btn`);
 
   openEditButton.addEventListener(`click`, () => {
+    const dayElement = document.querySelector(`.day`);
     if (!dayElement.querySelector(`form`)) {
       replaceEventToEdit();
       document.addEventListener(`keydown`, onEscKeyDown);
@@ -76,21 +78,27 @@ const headerHiddenElements = headerTripControlsElement.querySelectorAll(`.visual
 render(headerTripInfoElement, new TripInfoElement().getElement(), RenderPosition.AFTERBEGIN);
 render(headerHiddenElements[0], new MenuElement().getElement(), RenderPosition.AFTEREND);
 render(headerHiddenElements[1], new FilterElement().getElement(), RenderPosition.AFTEREND);
-
 const siteMainElement = sitePageBodyElement.querySelector(`.page-main`);
 const mainTripEventsElement = siteMainElement.querySelector(`.trip-events`);
-render(mainTripEventsElement, new SortElement().getElement(), RenderPosition.BEFOREEND);
-render(mainTripEventsElement, new DayListElement().getElement(), RenderPosition.BEFOREEND);
 
-const dayListElement = mainTripEventsElement.querySelector(`.trip-days`);
-render(dayListElement, new DayItem().getElement(), RenderPosition.BEFOREEND);
-
-const dayElement = dayListElement.querySelector(`.day`);
-render(dayElement, new EventContainer().getElement(), RenderPosition.BEFOREEND);
-
-const eventListElement = dayElement.querySelector(`.trip-events__list`);
 const eventList = data;
 
-eventList.forEach((event) => renderEvent(eventListElement, event));
 
-spanTripInfoElement.innerHTML = costTotal(eventList);
+if (eventList.length > 0) {
+  render(mainTripEventsElement, new SortElement().getElement(), RenderPosition.BEFOREEND);
+  render(mainTripEventsElement, new DayListElement().getElement(), RenderPosition.BEFOREEND);
+
+  const dayListElement = mainTripEventsElement.querySelector(`.trip-days`);
+  render(dayListElement, new DayItem().getElement(), RenderPosition.BEFOREEND);
+
+  const dayElement = dayListElement.querySelector(`.day`);
+  render(dayElement, new EventContainer().getElement(), RenderPosition.BEFOREEND);
+
+  const eventListElement = dayElement.querySelector(`.trip-events__list`);
+
+  eventList.forEach((event) => renderEvent(eventListElement, event));
+
+  spanTripInfoElement.innerHTML = costTotal(eventList);
+} else {
+  render(mainTripEventsElement, new NoEventElement().getElement(), RenderPosition.BEFOREEND);
+}
