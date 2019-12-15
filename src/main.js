@@ -46,8 +46,10 @@ const renderEvent = (eventListElement, event) => {
   const openEditButton = eventElement.getElement().querySelector(`.event__rollup-btn`);
 
   openEditButton.addEventListener(`click`, () => {
-    replaceEventToEdit();
-    document.addEventListener(`keydown`, onEscKeyDown);
+    if (!dayElement.querySelector(`form`)) {
+      replaceEventToEdit();
+      document.addEventListener(`keydown`, onEscKeyDown);
+    }
   });
 
   const eventEditElement = new EventEditElement(event);
@@ -55,7 +57,7 @@ const renderEvent = (eventListElement, event) => {
 
   closeEditButton.addEventListener(`click`, () => {
     replaceEditToEvent();
-    document.addEventListener(`keydown`, onEscKeyDown);
+    document.removeEventListener(`keydown`, onEscKeyDown);
   });
 
   eventEditElement.getElement().addEventListener(`submit`, replaceEditToEvent);
