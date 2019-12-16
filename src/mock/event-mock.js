@@ -87,7 +87,7 @@ const groupEvent = (events, group) => {
 
 
 let currentDate = null;
-const START_DAY_EVENT = 3;
+const START_DAY_EVENT = 1;
 const INTERVAL_HOURS = 2;
 
 const generateEvent = () => {
