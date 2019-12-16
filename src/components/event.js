@@ -3,10 +3,10 @@ import {castTimeFormat} from '../utils.js';
 import {createElement} from '../utils.js';
 
 const getDurationEvent = (start, end) => {
-  const duration = new Date(end - start);
-  const day = duration.getDay();
-  const hours = duration.getHours();
-  const minutes = duration.getMinutes();
+  const duration = end - start;
+  const day = Math.floor(duration / (24 * 60 * 60 * 1000));
+  const hours = Math.floor(duration % (24 * 60 * 60 * 1000) / (60 * 60 * 1000));
+  const minutes = Math.ceil(duration % (60 * 60 * 1000) / (60 * 1000));
 
   return `${day > 0 ? castTimeFormat(day) + `D ` : ``}${castTimeFormat(hours)}H ${(castTimeFormat(minutes))}M`;
 };

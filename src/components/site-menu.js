@@ -1,4 +1,4 @@
-import {MenuList} from '../const.js';
+import {MENU_LIST} from '../const.js';
 import {createElement} from "../utils";
 
 
@@ -21,7 +21,7 @@ const createMenuListMurkup = (menuList) => {
 const createSiteMenuTemplate = () => {
   return (
     `<nav class="trip-controls__trip-tabs  trip-tabs">
-      ${createMenuListMurkup(MenuList)}
+      ${createMenuListMurkup(MENU_LIST)}
     </nav>`
   );
 };
