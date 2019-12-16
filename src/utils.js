@@ -57,13 +57,16 @@ export const formatTime = (date) => {
 };
 
 export const formatDateTime = (date) => {
-  const yy = String(date.getYear()).slice(1);
+  const yyyy = date.getFullYear();
   const mm = castTimeFormat(date.getMonth() + 1);
   const dd = castTimeFormat(date.getDate());
   const hours = castTimeFormat(date.getHours());
   const minutes = castTimeFormat(date.getMinutes());
 
-  return `${dd}/${mm}/${yy} ${hours}:${minutes}`;
+  return {
+    date: `${yyyy}-${mm}-${dd}`,
+    dateTime: `${dd}/${mm}/${String(yyyy).slice(2)} ${hours}:${minutes}`,
+  };
 };
 
 const isObject = (object) => {
