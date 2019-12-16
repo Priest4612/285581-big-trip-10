@@ -82,21 +82,46 @@ const siteMainElement = sitePageBodyElement.querySelector(`.page-main`);
 const mainTripEventsElement = siteMainElement.querySelector(`.trip-events`);
 
 const events = data;
+const groupEventDate = [];
+let currentDate = null;
+events.forEach((item) => {
+  if (!currentDate || currentDate.getDate() !== item.dateStart.getDate()) {
+    currentDate = item.dateStart;
+    const Data = {};
+    Data.date = currentDate;
+    const array = events.filter((it) => it.dateStart.getDate() === currentDate.getDate());
+    Data.events = array;
+    groupEventDate.push(Data);
+  }
+});
 
+console.log(groupEventDate);
 
-if (events.length > 0) {
+if (groupEventDate.length > 0) {
   render(mainTripEventsElement, new SortElement().getElement(), RenderPosition.BEFOREEND);
   render(mainTripEventsElement, new DayListElement().getElement(), RenderPosition.BEFOREEND);
 
   const dayListElement = mainTripEventsElement.querySelector(`.trip-days`);
-  render(dayListElement, new DayItem().getElement(), RenderPosition.BEFOREEND);
 
-  const dayElement = dayListElement.querySelector(`.day`);
-  render(dayElement, new EventContainer().getElement(), RenderPosition.BEFOREEND);
+  groupEventDate.forEach((day) => {
+    render(dayListElement, new DayItem(day.date).getElement(), RenderPosition.BEFOREEND);
+    const days = dayListElement.querySelectorAll(`.day`);
+    const dayElement = days[days.length - 1];
+    render(dayElement, new EventContainer().getElement(), RenderPosition.BEFOREEND);
+    const eventListElement = dayElement.querySelector(`.trip-events__list`);
+    day.events.map((Event) => {
+      renderEvent(eventListElement, Event);
+    });
+  });
 
-  const eventListElement = dayElement.querySelector(`.trip-events__list`);
+  // render(dayListElement, new DayItem().getElement(), RenderPosition.BEFOREEND);
 
-  events.forEach((event) => renderEvent(eventListElement, event));
+  // const dayElement = dayListElement.querySelector(`.day`);
+  // render(dayElement, new EventContainer().getElement(), RenderPosition.BEFOREEND);
+
+  // const eventListElement = dayElement.querySelector(`.trip-events__list`);
+
+  // events.forEach((event) => renderEvent(eventListElement, event));
 
   spanTripInfoElement.innerHTML = costTotal(events);
 } else {
