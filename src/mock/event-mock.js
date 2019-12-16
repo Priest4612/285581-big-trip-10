@@ -1,4 +1,4 @@
-import {CITIES, OFFER_LIST, TRANSFER_LIST, ACTIVITY_LIST} from '../const.js';
+import {CityList, OfferList, TransferList, ActivityList} from '../const.js';
 import {getRandomInteger, getRandomArrayItem, getRandomDateDay, cloneArray} from '../utils.js';
 
 
@@ -91,12 +91,12 @@ const START_DAY_EVENT = 3;
 const INTERVAL_HOURS = 8;
 
 const generateEvent = () => {
-  const transfer = groupEvent(cloneArray(TRANSFER_LIST), `transfer`);
-  const activities = groupEvent(cloneArray(ACTIVITY_LIST), `activity`);
+  const transfer = groupEvent(cloneArray(TransferList), `transfer`);
+  const activities = groupEvent(cloneArray(ActivityList), `activity`);
 
   const sourceEventList = transfer.concat(activities);
-  const currentOfferList = cloneArray(OFFER_LIST);
-  const currentCityList = cloneArray(CITIES);
+  const currentOfferList = cloneArray(OfferList);
+  const currentCityList = cloneArray(CityList);
 
   const OFFER_MIN_COUNT = 0;
   const OFFER_MAX_COUNT = 2;

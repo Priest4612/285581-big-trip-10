@@ -1,4 +1,4 @@
-export const TRANSFER_LIST = [
+export const TransferList = [
   {title: `taxi`, price: 0, type: `taxi`},
   {title: `bus`, price: 0, type: `bus`},
   {title: `train`, price: 0, type: `train`},
@@ -8,20 +8,20 @@ export const TRANSFER_LIST = [
   {title: `flight`, price: 0, type: `flight`},
 ];
 
-export const ACTIVITY_LIST = [
+export const ActivityList = [
   {title: `check-in`, price: 0, type: `check-in`},
   {title: `restaurant`, price: 0, type: `restaurant`},
   {title: `sightseeing`, price: 0, type: `sightseeing`},
 ];
 
-export const CITIES = [
+export const CityList = [
   {title: `Saint Petersburg`},
   {title: `Amsterdam`},
   {title: `Geneva`},
   {title: `Chamonix`},
 ];
 
-export const OFFER_LIST = [
+export const OfferList = [
   {title: `Add luggage`, price: `0`, type: `luggage`},
   {title: `Switch to comfort class`, price: `0`, type: `comfort`},
   {title: `Add meal`, price: 0, type: `meal`},
@@ -34,12 +34,12 @@ export const OFFER_LIST = [
   {title: `Order Uber`, price: 0, type: `uber`},
 ];
 
-export const MENU_LIST = [
+export const MenuList = [
   {title: `Table`, active: true},
   {title: `Stats`, active: false}
 ];
 
-export const FILTER_LIST = [
+export const FilterList = [
   {
     title: `everything`,
     checked: true,

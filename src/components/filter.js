@@ -1,4 +1,4 @@
-import {FILTER_LIST} from '../const.js';
+import {FilterList} from '../const.js';
 import {createElement} from '../utils.js';
 
 const createFilterItem = (filterItem) => {
@@ -30,7 +30,7 @@ const createFilterTemplate = () => {
   return (
     `<form class="trip-filters" action="#" method="get">
 
-      ${createFilterListMurkup(FILTER_LIST)}
+      ${createFilterListMurkup(FilterList)}
 
       <button class="visually-hidden" type="submit">Accept filter</button>
     </form>`
