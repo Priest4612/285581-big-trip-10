@@ -13,9 +13,9 @@ import {RenderPosition} from './utils.js';
 import NoEventElement from './components/no-event.js';
 
 
-const costTotal = (eventList) => {
+const costTotal = (events) => {
   let total = 0;
-  eventList.forEach((event) => {
+  events.forEach((event) => {
     total += event.price;
   });
 
@@ -81,10 +81,10 @@ render(headerHiddenElements[1], new FilterElement().getElement(), RenderPosition
 const siteMainElement = sitePageBodyElement.querySelector(`.page-main`);
 const mainTripEventsElement = siteMainElement.querySelector(`.trip-events`);
 
-const eventList = data;
+const events = data;
 
 
-if (eventList.length > 0) {
+if (events.length > 0) {
   render(mainTripEventsElement, new SortElement().getElement(), RenderPosition.BEFOREEND);
   render(mainTripEventsElement, new DayListElement().getElement(), RenderPosition.BEFOREEND);
 
@@ -96,9 +96,9 @@ if (eventList.length > 0) {
 
   const eventListElement = dayElement.querySelector(`.trip-events__list`);
 
-  eventList.forEach((event) => renderEvent(eventListElement, event));
+  events.forEach((event) => renderEvent(eventListElement, event));
 
-  spanTripInfoElement.innerHTML = costTotal(eventList);
+  spanTripInfoElement.innerHTML = costTotal(events);
 } else {
   render(mainTripEventsElement, new NoEventElement().getElement(), RenderPosition.BEFOREEND);
 }
