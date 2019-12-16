@@ -1,30 +1,34 @@
-import {createElement} from "../utils";
+import {createElement, formatDateTime} from "../utils";
+import {MonstList} from "../const";
 
-const createDateMarkup = () => {
+const createDateMarkup = (date) => {
   return (
     `<div class="day__info">
-      <span class="day__counter">1</span>
-      <time class="day__date" datetime="2019-03-18">MAR 18</time>
+      <span class="day__counter">${date.getDate()}</span>
+      <time class="day__date" datetime="${formatDateTime(date).date}">
+        ${MonstList[date.getMonth()]} ${String(date.getFullYear()).slice(2)}
+      </time>
     </div>`
   );
 };
 
-const createDayTemplate = () => {
+const createDayTemplate = (date) => {
   return (
     `<li class="trip-days__item  day">
-      ${createDateMarkup()}
+      ${createDateMarkup(date)}
     </li>`
   );
 };
 
 
 export default class DayItem {
-  constructor() {
+  constructor(date) {
+    this._date = date;
     this._element = null;
   }
 
   getTemplate() {
-    return createDayTemplate();
+    return createDayTemplate(this._date);
   }
 
   getElement() {
