@@ -63,11 +63,11 @@ const generateActiveElements = (array, count) => {
 
 
 const сalculationСostEvent = (offers, events) => {
-  let cost = events.filter((it) => it.checked)[0].price;
+  let cost = events.filter((item) => item.checked)[0].price;
 
-  for (const iterator of offers) {
-    if (iterator.checked) {
-      cost = cost + iterator.price;
+  for (const offer of offers) {
+    if (offer.checked) {
+      cost = cost + offer.price;
     }
   }
 
@@ -75,10 +75,10 @@ const сalculationСostEvent = (offers, events) => {
 };
 
 
-const groupEvent = (array, group) => {
+const groupEvent = (events, group) => {
   const newArray = [];
 
-  array.forEach((obj) =>{
+  events.forEach((obj) =>{
     obj.group = group;
     newArray.push(obj);
   });
@@ -99,7 +99,7 @@ const generateEvent = () => {
   const currentCityList = cloneArray(CityList);
 
   const OFFER_MIN_COUNT = 0;
-  const OFFER_MAX_COUNT = 2;
+  const OFFER_MAX_COUNT = 3;
 
   const eventList = generateActiveElements(generatePriceElements(sourceEventList), 1);
   const activeOfferList = generateActiveElements(generatePriceElements(currentOfferList), getRandomInteger(OFFER_MIN_COUNT, OFFER_MAX_COUNT));

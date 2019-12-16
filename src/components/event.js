@@ -12,38 +12,38 @@ const getDurationEvent = (start, end) => {
 };
 
 
-const createOfferItem = (offer) => {
+const createOfferItem = (Offer) => {
   return (
     `<li class="event__offer">
-      <span class="event__offer-title">${offer.title}</span>
+      <span class="event__offer-title">${Offer.title}</span>
       &plus;
-      &euro;&nbsp;<span class="event__offer-price">${offer.price}</span>
+      &euro;&nbsp;<span class="event__offer-price">${Offer.price}</span>
     </li>`
   );
 };
 
 
-const createOfferListMarkup = (offerList) => {
+const createOfferListMarkup = (offers) => {
   return Array
-  .from(offerList.filter((it) => it.checked))
-  .map((offer) => {
-    return createOfferItem(offer);
+  .from(offers.filter((it) => it.checked))
+  .map((Offer) => {
+    return createOfferItem(Offer);
   }).join(`\n`);
 };
 
 
-const createEventTemplate = (event) => {
-  const {eventList, locationList, dateStart, dateEnd, price, offerList} = event;
-  const activeEvent = eventList.filter((it) => it.checked)[0];
-  const activeLocationList = locationList.filter((it) => it.checked)[0];
+const createEventTemplate = (Event) => {
+  const {eventList, locationList, dateStart, dateEnd, price, offerList} = Event;
+  const ActiveEvent = eventList.filter((it) => it.checked)[0];
+  const ActiveLocationList = locationList.filter((it) => it.checked)[0];
 
   return (
     `<li class="trip-events__item">
       <div class="event">
         <div class="event__type">
-          <img class="event__type-icon" width="42" height="42" src="img/icons/${activeEvent.title}.png" alt="Event type icon">
+          <img class="event__type-icon" width="42" height="42" src="img/icons/${ActiveEvent.title}.png" alt="Event type icon">
         </div>
-        <h3 class="event__title">${activeEvent.title} to ${activeLocationList.title}</h3>
+        <h3 class="event__title">${ActiveEvent.title} to ${ActiveLocationList.title}</h3>
 
         <div class="event__schedule">
           <p class="event__time">
@@ -75,8 +75,8 @@ const createEventTemplate = (event) => {
 
 
 export default class EventElement {
-  constructor(event) {
-    this._event = event;
+  constructor(Event) {
+    this._event = Event;
 
     this._element = null;
   }

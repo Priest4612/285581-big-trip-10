@@ -1,7 +1,7 @@
 import {formatDateTime, getRandomArrayItem, createElement} from '../utils.js';
 
 
-const createtemplateListMarkup = (cb, dataList, group = ``) => {
+const createTemplateListMarkup = (cb, dataList, group = ``) => {
   let array = [];
 
   if (group !== ``) {
@@ -18,12 +18,12 @@ const createtemplateListMarkup = (cb, dataList, group = ``) => {
 };
 
 
-const createEventItem = (event) => {
+const createEventItem = (Event) => {
   return (
     `<div class="event__type-item">
-      <input id="event-type-${event.type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${event.type}"
-      ${event.checked ? `checked` : ``}>
-      <label class="event__type-label  event__type-label--${event.type}" for="event-type-${event.type}-1">${event.title[0].toUpperCase() + event.title.slice(1)}</label>
+      <input id="Event-type-${Event.type}-1" class="event__type-input  visually-hidden" type="radio" name="Event-type" value="${Event.type}"
+      ${Event.checked ? `checked` : ``}>
+      <label class="event__type-label  event__type-label--${Event.type}" for="Event-type-${Event.type}-1">${Event.title[0].toUpperCase() + Event.title.slice(1)}</label>
     </div>`
   );
 };
@@ -36,32 +36,32 @@ const createCityItem = (city) => {
 };
 
 
-const createOfferItem = (offer) => {
+const createOfferItem = (Offer) => {
   return (
     `<div class="event__offer-selector">
-      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.type}-1" type="checkbox" name="event-offer-${offer.type}" ${offer.checked ? `checked` : ``}>
-      <label class="event__offer-label" for="event-offer-${offer.type}-1">
-        <span class="event__offer-title">${offer.title}</span>
+      <input class="event__offer-checkbox  visually-hidden" id="event-Offer-${Offer.type}-1" type="checkbox" name="event-Offer-${Offer.type}" ${Offer.checked ? `checked` : ``}>
+      <label class="event__offer-label" for="event-Offer-${Offer.type}-1">
+        <span class="event__offer-title">${Offer.title}</span>
         &plus;
-        &euro;&nbsp;<span class="event__offer-price">${offer.price}</span>
+        &euro;&nbsp;<span class="event__offer-price">${Offer.price}</span>
       </label>
     </div>`
   );
 };
 
 
-const createOfferListMarkup = (offerList) => {
+const createOfferListMarkup = (offers) => {
   const OFFERS_AVAILABLE_COUNT = 5;
-  const newArray = offerList.filter((it) => it.checked);
+  const newArray = offers.filter((it) => it.checked);
 
   for (let index = newArray.length; index < OFFERS_AVAILABLE_COUNT; index++) {
-    const element = getRandomArrayItem(offerList.filter((it) => !it.checked));
+    const element = getRandomArrayItem(offers.filter((it) => !it.checked));
     newArray.push(element);
   }
 
   return Array
   .from(newArray)
-  .map((offer) => createOfferItem(offer))
+  .map((Offer) => createOfferItem(Offer))
   .join(`\n`);
 };
 
@@ -80,10 +80,10 @@ const createPhotoListMarkup = (urlPhotoList) => {
 };
 
 
-export const createEventEditTemplate = (event) => {
-  const {eventList, isFavorite, locationList, dateStart, dateEnd, price, offerList, description, photos} = event;
-  const activeEvent = eventList.filter((it) => it.checked)[0];
-  const activeLocationList = locationList.filter((it) => it.checked)[0];
+export const createEventEditTemplate = (Event) => {
+  const {eventList, isFavorite, locationList, dateStart, dateEnd, price, offerList, description, photos} = Event;
+  const ActiveEvent = eventList.filter((it) => it.checked)[0];
+  const ActiveLocationList = locationList.filter((it) => it.checked)[0];
 
   return (
     `<li class="trip-events__item">
@@ -92,7 +92,7 @@ export const createEventEditTemplate = (event) => {
           <div class="event__type-wrapper">
             <label class="event__type  event__type-btn" for="event-type-toggle-1">
               <span class="visually-hidden">Choose event type</span>
-              <img class="event__type-icon" width="17" height="17" src="img/icons/${activeEvent.type}.png" alt="Event type icon">
+              <img class="event__type-icon" width="17" height="17" src="img/icons/${ActiveEvent.type}.png" alt="Event type icon">
             </label>
             <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
@@ -100,14 +100,14 @@ export const createEventEditTemplate = (event) => {
               <fieldset class="event__type-group">
                 <legend class="visually-hidden">Transfer</legend>
 
-                ${createtemplateListMarkup(createEventItem, eventList, `transfer`)}
+                ${createTemplateListMarkup(createEventItem, eventList, `transfer`)}
 
               </fieldset>
 
               <fieldset class="event__type-group">
                 <legend class="visually-hidden">Activity</legend>
 
-                ${createtemplateListMarkup(createEventItem, eventList, `activity`)}
+                ${createTemplateListMarkup(createEventItem, eventList, `activity`)}
 
               </fieldset>
             </div>
@@ -117,9 +117,9 @@ export const createEventEditTemplate = (event) => {
             <label class="event__label  event__type-output" for="event-destination-1">
               Sightseeing at
             </label>
-            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${activeLocationList.title}" list="destination-list-1">
+            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${ActiveLocationList.title}" list="destination-list-1">
             <datalist id="destination-list-1">
-              ${createtemplateListMarkup(createCityItem, locationList)}
+              ${createTemplateListMarkup(createCityItem, locationList)}
             </datalist>
           </div>
 
@@ -192,8 +192,8 @@ export const createEventEditTemplate = (event) => {
 
 
 export default class EventEditElement {
-  constructor(event) {
-    this._event = event;
+  constructor(Event) {
+    this._event = Event;
     this._element = null;
   }
 
