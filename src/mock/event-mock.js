@@ -88,7 +88,7 @@ const groupEvent = (events, group) => {
 
 let currentDate = null;
 const START_DAY_EVENT = 3;
-const INTERVAL_HOURS = 8;
+const INTERVAL_HOURS = 2;
 
 const generateEvent = () => {
   const transfer = groupEvent(cloneArray(TransferList), `transfer`);
