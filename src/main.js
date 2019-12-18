@@ -13,7 +13,7 @@ import {RenderPosition} from './utils.js';
 import NoEventElement from './components/no-event.js';
 
 
-const costTotal = (events) => {
+const calculationTotal = (events) => {
   let total = 0;
   events.forEach((event) => {
     total += event.price;
@@ -47,7 +47,7 @@ const renderEvent = (eventListElement, event) => {
   const openEditButton = eventElement.getElement().querySelector(`.event__rollup-btn`);
 
   openEditButton.addEventListener(`click`, () => {
-    const dayElement = document.querySelector(`.day`);
+    const dayElement = document.querySelector(`.trip-days`);
     if (!dayElement.querySelector(`form`)) {
       replaceEventToEdit();
       document.addEventListener(`keydown`, onEscKeyDown);
@@ -67,6 +67,7 @@ const renderEvent = (eventListElement, event) => {
   render(eventListElement, eventElement.getElement(), RenderPosition.BEFOREEND);
 };
 
+const events = data;
 
 const sitePageBodyElement = document.querySelector(`.page-body`);
 const siteHeaderElement = sitePageBodyElement.querySelector(`.page-header`);
@@ -81,14 +82,13 @@ render(headerHiddenElements[1], new FilterElement().getElement(), RenderPosition
 
 const siteMainElement = sitePageBodyElement.querySelector(`.page-main`);
 const mainTripEventsElement = siteMainElement.querySelector(`.trip-events`);
-const events = data;
 
 
 const groupEventDate = [];
 let currentDate = null;
-events.forEach((Event) => {
-  if (!currentDate || currentDate.getDate() !== Event.dateStart.getDate()) {
-    currentDate = Event.dateStart;
+events.forEach((event) => {
+  if (!currentDate || currentDate.getDate() !== event.dateStart.getDate()) {
+    currentDate = event.dateStart;
     const Data = {};
     Data.date = currentDate;
     const array = events.filter((it) => it.dateStart.getDate() === currentDate.getDate());
@@ -109,12 +109,12 @@ if (groupEventDate.length > 0) {
     const dayElement = days[days.length - 1];
     render(dayElement, new EventContainer().getElement(), RenderPosition.BEFOREEND);
     const eventListElement = dayElement.querySelector(`.trip-events__list`);
-    day.events.map((Event) => {
-      renderEvent(eventListElement, Event);
+    day.events.forEach((event) => {
+      renderEvent(eventListElement, event);
     });
   });
 
-  spanTripInfoElement.innerHTML = costTotal(events);
+  spanTripInfoElement.innerHTML = calculationTotal(events);
 } else {
   render(mainTripEventsElement, new NoEventElement().getElement(), RenderPosition.BEFOREEND);
 }
