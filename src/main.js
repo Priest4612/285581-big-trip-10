@@ -51,6 +51,7 @@ const renderEvent = (eventListElement, event) => {
     if (!dayElement.querySelector(`form`)) {
       replaceEventToEdit();
       document.addEventListener(`keydown`, onEscKeyDown);
+      eventEditElement.getElement().removeEventListener(`submit`, replaceEditToEvent);
     }
   });
 
