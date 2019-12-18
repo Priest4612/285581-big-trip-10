@@ -13,11 +13,16 @@ const createTripInfoTemplate = () => {
 
 
 export default class TripInfoElement {
-  consturctor() {
+  consturctor(startTrip, endTrip) {
+    this._start = startTrip;
+    this._end = endTrip;
+
     this._element = null;
   }
 
   getTemplate() {
+    // console.log(this._start);
+    // console.log(this._start);
     return createTripInfoTemplate();
   }
 
