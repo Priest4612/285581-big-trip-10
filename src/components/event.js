@@ -12,12 +12,12 @@ const getDurationEvent = (start, end) => {
 };
 
 
-const createOfferItem = (Offer) => {
+const createOfferItem = (offer) => {
   return (
     `<li class="event__offer">
-      <span class="event__offer-title">${Offer.title}</span>
+      <span class="event__offer-title">${offer.title}</span>
       &plus;
-      &euro;&nbsp;<span class="event__offer-price">${Offer.price}</span>
+      &euro;&nbsp;<span class="event__offer-price">${offer.price}</span>
     </li>`
   );
 };
@@ -26,24 +26,24 @@ const createOfferItem = (Offer) => {
 const createOfferListMarkup = (offers) => {
   return Array
   .from(offers.filter((it) => it.checked))
-  .map((Offer) => {
-    return createOfferItem(Offer);
+  .map((offer) => {
+    return createOfferItem(offer);
   }).join(`\n`);
 };
 
 
-const createEventTemplate = (Event) => {
-  const {eventList, locationList, dateStart, dateEnd, price, offerList} = Event;
+const createEventTemplate = (event) => {
+  const {eventList, locationList, dateStart, dateEnd, price, offerList} = event;
   const ActiveEvent = eventList.filter((it) => it.checked)[0];
-  const ActiveLocationList = locationList.filter((it) => it.checked)[0];
+  const ActiveLocation = locationList.filter((it) => it.checked)[0];
 
   return (
     `<li class="trip-events__item">
       <div class="event">
         <div class="event__type">
-          <img class="event__type-icon" width="42" height="42" src="img/icons/${ActiveEvent.title}.png" alt="Event type icon">
+          <img class="event__type-icon" width="42" height="42" src="img/icons/${ActiveEvent.title}.png" alt="event type icon">
         </div>
-        <h3 class="event__title">${ActiveEvent.title} to ${ActiveLocationList.title}</h3>
+        <h3 class="event__title">${ActiveEvent.title} to ${ActiveLocation.title}</h3>
 
         <div class="event__schedule">
           <p class="event__time">
@@ -75,8 +75,8 @@ const createEventTemplate = (Event) => {
 
 
 export default class EventElement {
-  constructor(Event) {
-    this._event = Event;
+  constructor(event) {
+    this._event = event;
 
     this._element = null;
   }
