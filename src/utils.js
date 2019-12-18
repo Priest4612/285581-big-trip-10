@@ -8,16 +8,6 @@ export const getRandomArrayItem = (array, startIndex = 0) => {
 };
 
 
-export const getRandomDate = (endEvent = 30) => {
-  const targetDate = new Date();
-  const hours = getRandomInteger(0, 23);
-  const minutes = getRandomInteger(0, 59);
-  targetDate.setDate(targetDate.getDate() + getRandomInteger(0, endEvent));
-  targetDate.setHours(hours, minutes);
-
-  return targetDate;
-};
-
 const getRandomHours = (date, intervalHours) => {
   const targetDate = new Date(date);
   const hours = getRandomInteger(targetDate.getHours(), intervalHours) % 24;
