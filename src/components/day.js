@@ -1,12 +1,12 @@
 import {createElement, formatDateTime} from "../utils";
-import {MonstList} from "../const";
+import {MonthList} from "../const";
 
 const createDateMarkup = (date) => {
   return (
     `<div class="day__info">
       <span class="day__counter">${date.getDate()}</span>
       <time class="day__date" datetime="${formatDateTime(date).date}">
-        ${MonstList[date.getMonth()]} ${String(date.getFullYear()).slice(2)}
+        ${MonthList[date.getMonth()]} ${String(date.getFullYear()).slice(2)}
       </time>
     </div>`
   );

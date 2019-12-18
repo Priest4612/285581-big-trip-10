@@ -72,8 +72,11 @@ const events = data;
 
 const sitePageBodyElement = document.querySelector(`.page-body`);
 const siteHeaderElement = sitePageBodyElement.querySelector(`.page-header`);
+
 const headerTripInfoElement = siteHeaderElement.querySelector(`.trip-info`);
-render(headerTripInfoElement, new TripInfoElement(events.slice(0, 1), events.slice(events.length - 1))
+render(headerTripInfoElement, new TripInfoElement(
+    events[0],
+    events[events.length - 1])
 .getElement(), RenderPosition.AFTERBEGIN);
 const spanTripInfoElement = headerTripInfoElement.querySelector(`.trip-info__cost-value`);
 

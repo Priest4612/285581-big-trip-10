@@ -1,29 +1,49 @@
 import {createElement} from "../utils";
+import {MonthList} from "../const";
 
 
-const createTripInfoTemplate = () => {
+const createTripInfoTemplate = (startTrip, endTrip) => {
+  const startLocation = startTrip.locationList.filter((it)=>it.checked);
+  const endLocation = endTrip.locationList.filter((it)=>it.checked);
+
+  const startMonth = MonthList[startTrip.dateStart.getMonth()];
+  const startDate = startTrip.dateStart.getDate();
+  const endMonth = MonthList[endTrip.dateEnd.getMonth()];
+  const endDate = endTrip.dateEnd.getDate();
+
+  let intervalDateTemplate = null;
+  if (startMonth !== endMonth) {
+    intervalDateTemplate = `${startMonth} ${startDate}&nbsp;&mdash;&nbsp;${endMonth} ${endDate}`;
+  } else {
+    intervalDateTemplate = `${startMonth} ${startDate}&nbsp;&mdash;&nbsp;${endDate}`;
+  }
+
   return (
     `<div class="trip-info__main">
-      <h1 class="trip-info__title">Amsterdam &mdash; ... &mdash; Amsterdam</h1>
+      <h1 class="trip-info__title">
+        ${startLocation[0].title}
+        &mdash; ... &mdash;
+        ${endLocation[0].title}
+      </h1>
 
-      <p class="trip-info__dates">Mar 18&nbsp;&mdash;&nbsp;21</p>
+      <p class="trip-info__dates">
+        ${intervalDateTemplate}
+      </p>
     </div>`
   );
 };
 
 
 export default class TripInfoElement {
-  consturctor(startTrip, endTrip) {
-    this._start = startTrip;
-    this._end = endTrip;
+  constructor(startTrip, endTrip) {
+    this._startTrip = startTrip;
+    this._endTrip = endTrip;
 
     this._element = null;
   }
 
   getTemplate() {
-    // console.log(this._start);
-    // console.log(this._start);
-    return createTripInfoTemplate();
+    return createTripInfoTemplate(this._startTrip, this._endTrip);
   }
 
   getElement() {

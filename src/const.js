@@ -54,7 +54,7 @@ export const FilterList = [
   }
 ];
 
-export const MonstList = [
+export const MonthList = [
   `Jan`,
   `Feb`,
   `Mar`,
