@@ -3,23 +3,26 @@ import {MonthList} from "../const";
 
 
 const createTripInfoTemplate = (startTrip, endTrip) => {
-  const startLocation = startTrip.locationList.filter((it)=>it.checked);
-  const endLocation = endTrip.locationList.filter((it)=>it.checked);
-
-  const startMonth = MonthList[startTrip.dateStart.getMonth()];
-  const startDate = startTrip.dateStart.getDate();
-  const endMonth = MonthList[endTrip.dateEnd.getMonth()];
-  const endDate = endTrip.dateEnd.getDate();
-
+  let template = null;
   let intervalDateTemplate = null;
-  if (startMonth !== endMonth) {
-    intervalDateTemplate = `${startMonth} ${startDate}&nbsp;&mdash;&nbsp;${endMonth} ${endDate}`;
+  if (!startTrip && !endTrip) {
+    // моя заглушка
+    template = `<p></p>`;
   } else {
-    intervalDateTemplate = `${startMonth} ${startDate}&nbsp;&mdash;&nbsp;${endDate}`;
-  }
+    const startLocation = startTrip.locationList.filter((it)=>it.checked);
+    const endLocation = endTrip.locationList.filter((it)=>it.checked);
 
-  return (
-    `<div class="trip-info__main">
+    const startMonth = MonthList[startTrip.dateStart.getMonth()];
+    const startDate = startTrip.dateStart.getDate();
+    const endMonth = MonthList[endTrip.dateEnd.getMonth()];
+    const endDate = endTrip.dateEnd.getDate();
+
+    if (startMonth !== endMonth) {
+      intervalDateTemplate = `${startMonth} ${startDate}&nbsp;&mdash;&nbsp;${endMonth} ${endDate}`;
+    } else {
+      intervalDateTemplate = `${startMonth} ${startDate}&nbsp;&mdash;&nbsp;${endDate}`;
+    }
+    template = `<div class="trip-info__main">
       <h1 class="trip-info__title">
         ${startLocation[0].title}
         &mdash; ... &mdash;
@@ -29,8 +32,10 @@ const createTripInfoTemplate = (startTrip, endTrip) => {
       <p class="trip-info__dates">
         ${intervalDateTemplate}
       </p>
-    </div>`
-  );
+    </div>`;
+  }
+
+  return template;
 };
 
 
