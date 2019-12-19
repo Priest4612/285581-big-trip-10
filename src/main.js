@@ -1,3 +1,4 @@
+import {data} from './mock/data.js';
 import TripInfoElement from './components/trip-info.js';
 import MenuElement from './components/site-menu.js';
 import FilterElement from './components/filter.js';
@@ -7,14 +8,14 @@ import DayItem from './components/day.js';
 import EventContainer from './components/event-list.js';
 import EventEditElement from './components/event-edit.js';
 import EventElement from './components/event.js';
-import {data} from './mock/data.js';
 import {render} from './utils.js';
 import {RenderPosition} from './utils.js';
+import NoEventElement from './components/no-event.js';
 
 
-const costTotal = (eventList) => {
+const calculationTotal = (events) => {
   let total = 0;
-  eventList.forEach((event) => {
+  events.forEach((event) => {
     total += event.price;
   });
 
@@ -46,6 +47,7 @@ const renderEvent = (eventListElement, event) => {
   const openEditButton = eventElement.getElement().querySelector(`.event__rollup-btn`);
 
   openEditButton.addEventListener(`click`, () => {
+    const dayElement = document.querySelector(`.trip-days`);
     if (!dayElement.querySelector(`form`)) {
       replaceEventToEdit();
       document.addEventListener(`keydown`, onEscKeyDown);
@@ -60,37 +62,67 @@ const renderEvent = (eventListElement, event) => {
     document.removeEventListener(`keydown`, onEscKeyDown);
   });
 
-  eventEditElement.getElement().addEventListener(`submit`, replaceEditToEvent);
+  eventEditElement.getElement().addEventListener(`submit`, () => {
+    replaceEditToEvent();
+    document.addEventListener(`keydown`, onEscKeyDown);
+  });
 
   render(eventListElement, eventElement.getElement(), RenderPosition.BEFOREEND);
 };
 
+const events = data;
+
 const sitePageBodyElement = document.querySelector(`.page-body`);
 const siteHeaderElement = sitePageBodyElement.querySelector(`.page-header`);
 
+const startTrip = events[0] ? events[0] : null;
+const endTrip = events[events.length - 1] ? events[events.length - 1] : null;
+const tripInfoElement = new TripInfoElement(startTrip, endTrip);
+
 const headerTripInfoElement = siteHeaderElement.querySelector(`.trip-info`);
+render(headerTripInfoElement, tripInfoElement.getElement(), RenderPosition.AFTERBEGIN);
 const spanTripInfoElement = headerTripInfoElement.querySelector(`.trip-info__cost-value`);
 
 const headerTripControlsElement = siteHeaderElement.querySelector(`.trip-controls`);
 const headerHiddenElements = headerTripControlsElement.querySelectorAll(`.visually-hidden`);
-render(headerTripInfoElement, new TripInfoElement().getElement(), RenderPosition.AFTERBEGIN);
 render(headerHiddenElements[0], new MenuElement().getElement(), RenderPosition.AFTEREND);
 render(headerHiddenElements[1], new FilterElement().getElement(), RenderPosition.AFTEREND);
 
 const siteMainElement = sitePageBodyElement.querySelector(`.page-main`);
 const mainTripEventsElement = siteMainElement.querySelector(`.trip-events`);
-render(mainTripEventsElement, new SortElement().getElement(), RenderPosition.BEFOREEND);
-render(mainTripEventsElement, new DayListElement().getElement(), RenderPosition.BEFOREEND);
 
-const dayListElement = mainTripEventsElement.querySelector(`.trip-days`);
-render(dayListElement, new DayItem().getElement(), RenderPosition.BEFOREEND);
 
-const dayElement = dayListElement.querySelector(`.day`);
-render(dayElement, new EventContainer().getElement(), RenderPosition.BEFOREEND);
+const groupEventDate = [];
+let currentDate = null;
+events.forEach((event) => {
+  if (!currentDate || currentDate.getDate() !== event.dateStart.getDate()) {
+    currentDate = event.dateStart;
+    const Data = {};
+    Data.date = currentDate;
+    const array = events.filter((it) => it.dateStart.getDate() === currentDate.getDate());
+    Data.events = array;
+    groupEventDate.push(Data);
+  }
+});
 
-const eventListElement = dayElement.querySelector(`.trip-events__list`);
-const eventList = data;
+if (groupEventDate.length > 0) {
+  render(mainTripEventsElement, new SortElement().getElement(), RenderPosition.BEFOREEND);
+  render(mainTripEventsElement, new DayListElement().getElement(), RenderPosition.BEFOREEND);
 
-eventList.forEach((event) => renderEvent(eventListElement, event));
+  const dayListElement = mainTripEventsElement.querySelector(`.trip-days`);
 
-spanTripInfoElement.innerHTML = costTotal(eventList);
+  groupEventDate.forEach((day) => {
+    render(dayListElement, new DayItem(day.date).getElement(), RenderPosition.BEFOREEND);
+    const days = dayListElement.querySelectorAll(`.day`);
+    const dayElement = days[days.length - 1];
+    render(dayElement, new EventContainer().getElement(), RenderPosition.BEFOREEND);
+    const eventListElement = dayElement.querySelector(`.trip-events__list`);
+    day.events.forEach((event) => {
+      renderEvent(eventListElement, event);
+    });
+  });
+
+  spanTripInfoElement.innerHTML = calculationTotal(events);
+} else {
+  render(mainTripEventsElement, new NoEventElement().getElement(), RenderPosition.BEFOREEND);
+}

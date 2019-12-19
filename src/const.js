@@ -14,7 +14,7 @@ export const ActivityList = [
   {title: `sightseeing`, price: 0, type: `sightseeing`},
 ];
 
-export const Cities = [
+export const CityList = [
   {title: `Saint Petersburg`},
   {title: `Amsterdam`},
   {title: `Geneva`},
@@ -52,4 +52,19 @@ export const FilterList = [
     title: `past`,
     checked: false,
   }
+];
+
+export const MonthList = [
+  `Jan`,
+  `Feb`,
+  `Mar`,
+  `Apr`,
+  `May`,
+  `Jun`,
+  `Jul`,
+  `Aug`,
+  `Sep`,
+  `Oct`,
+  `Nov`,
+  `Dec`,
 ];

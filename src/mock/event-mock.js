@@ -1,5 +1,5 @@
-import {Cities, OfferList, TransferList, ActivityList} from '../const.js';
-import {getRandomInteger, getRandomArrayItem, getRandomDate, cloneArray} from '../utils.js';
+import {CityList, OfferList, TransferList, ActivityList} from '../const.js';
+import {getRandomInteger, getRandomArrayItem, getRandomDateDay, cloneArray} from '../utils.js';
 
 
 const generateDescription = () => {
@@ -63,11 +63,11 @@ const generateActiveElements = (array, count) => {
 
 
 const сalculationСostEvent = (offers, events) => {
-  let cost = events.filter((it) => it.checked)[0].price;
+  let cost = events.filter((item) => item.checked)[0].price;
 
-  for (const iterator of offers) {
-    if (iterator.checked) {
-      cost = cost + iterator.price;
+  for (const offer of offers) {
+    if (offer.checked) {
+      cost = cost + offer.price;
     }
   }
 
@@ -75,10 +75,10 @@ const сalculationСostEvent = (offers, events) => {
 };
 
 
-const groupEvent = (array, group) => {
+const groupEvent = (events, group) => {
   const newArray = [];
 
-  array.forEach((obj) =>{
+  events.forEach((obj) =>{
     obj.group = group;
     newArray.push(obj);
   });
@@ -86,16 +86,20 @@ const groupEvent = (array, group) => {
 };
 
 
+let currentDate = null;
+const START_DAY_EVENT = 1;
+const INTERVAL_HOURS = 2;
+
 const generateEvent = () => {
   const transfer = groupEvent(cloneArray(TransferList), `transfer`);
   const activities = groupEvent(cloneArray(ActivityList), `activity`);
 
   const sourceEventList = transfer.concat(activities);
   const currentOfferList = cloneArray(OfferList);
-  const currentCityList = cloneArray(Cities);
+  const currentCityList = cloneArray(CityList);
 
   const OFFER_MIN_COUNT = 0;
-  const OFFER_MAX_COUNT = 2;
+  const OFFER_MAX_COUNT = 3;
 
   const eventList = generateActiveElements(generatePriceElements(sourceEventList), 1);
   const activeOfferList = generateActiveElements(generatePriceElements(currentOfferList), getRandomInteger(OFFER_MIN_COUNT, OFFER_MAX_COUNT));
@@ -103,12 +107,15 @@ const generateEvent = () => {
   const cityList = generateActiveElements(currentCityList, 1);
   const costEvent = сalculationСostEvent(activeOfferList, eventList);
 
+  const dateDay = getRandomDateDay(currentDate, START_DAY_EVENT, INTERVAL_HOURS);
+  currentDate = dateDay.dateEnd;
+
   return {
     eventList,
     isFavorite: Math.random() > 0.5,
     locationList: cityList,
-    dateStart: getRandomDate(7),
-    dateEnd: getRandomDate(30),
+    dateStart: dateDay.dateStart,
+    dateEnd: dateDay.dateEnd,
     price: costEvent,
     offerList: activeOfferList,
     description: generateDescription(),

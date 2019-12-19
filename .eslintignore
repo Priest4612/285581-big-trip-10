@@ -1,8 +1,8 @@
 #
-./webpack.config.js
+/webpack.config.js
 
 # Файлы тестирования кода
-./src/debugger/
+/src/debugger/
 
 # Файлы компидяции
-./public/
+/public/

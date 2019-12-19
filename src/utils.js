@@ -8,14 +8,30 @@ export const getRandomArrayItem = (array, startIndex = 0) => {
 };
 
 
-export const getRandomDate = (endEvent = 30) => {
-  const targetDate = new Date();
-  const hours = getRandomInteger(0, 23);
-  const minutes = getRandomInteger(0, 59);
-  targetDate.setDate(targetDate.getDate() + getRandomInteger(0, endEvent));
-  targetDate.setHours(hours, minutes);
-
+const getRandomHours = (date, intervalHours) => {
+  const targetDate = new Date(date);
+  const hours = getRandomInteger(targetDate.getHours(), intervalHours) % 24;
+  const minutes = getRandomInteger(targetDate.getMinutes(), 59);
+  targetDate.setHours(targetDate.getHours() + hours, targetDate.getMinutes() + minutes);
   return targetDate;
+};
+
+export const getRandomDateDay = (referencePoint = null, startDayEvent = 3, intervalHours = 8) => {
+  let dateStart = 0;
+  let dateEnd = 0;
+
+  if (!referencePoint) {
+    const targetDate = new Date();
+    targetDate.setDate(targetDate.getDate() - getRandomInteger(0, startDayEvent));
+    dateStart = getRandomHours(targetDate, intervalHours);
+    dateEnd = getRandomHours(dateStart, intervalHours);
+  } else {
+    const targetDate = referencePoint;
+    dateStart = getRandomHours(targetDate, intervalHours);
+    dateEnd = getRandomHours(dateStart, intervalHours);
+  }
+
+  return {dateStart, dateEnd};
 };
 
 export const castTimeFormat = (value) => {
@@ -31,13 +47,16 @@ export const formatTime = (date) => {
 };
 
 export const formatDateTime = (date) => {
-  const yy = String(date.getYear()).slice(1);
+  const yyyy = date.getFullYear();
   const mm = castTimeFormat(date.getMonth() + 1);
   const dd = castTimeFormat(date.getDate());
   const hours = castTimeFormat(date.getHours());
   const minutes = castTimeFormat(date.getMinutes());
 
-  return `${dd}/${mm}/${yy} ${hours}:${minutes}`;
+  return {
+    date: `${yyyy}-${mm}-${dd}`,
+    dateTime: `${dd}/${mm}/${String(yyyy).slice(2)} ${hours}:${minutes}`,
+  };
 };
 
 const isObject = (object) => {

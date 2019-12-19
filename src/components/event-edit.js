@@ -1,11 +1,11 @@
 import {formatDateTime, getRandomArrayItem, createElement} from '../utils.js';
 
 
-const createtemplateListMarkup = (cb, dataList, group = ``) => {
+const createTemplateListMarkup = (cb, dataList, group = ``) => {
   let array = [];
 
   if (group !== ``) {
-    const tempArray = dataList.filter((it) => it.group === group);
+    const tempArray = dataList.filter((item) => item.group === group);
     array = array.concat(tempArray);
   } else {
     array.concat(dataList);
@@ -50,12 +50,12 @@ const createOfferItem = (offer) => {
 };
 
 
-const createOfferListMarkup = (offerList) => {
+const createOfferListMarkup = (offers) => {
   const OFFERS_AVAILABLE_COUNT = 5;
-  const newArray = offerList.filter((it) => it.checked);
+  const newArray = offers.filter((offer) => offer.checked);
 
   for (let index = newArray.length; index < OFFERS_AVAILABLE_COUNT; index++) {
-    const element = getRandomArrayItem(offerList.filter((it) => !it.checked));
+    const element = getRandomArrayItem(offers.filter((offer) => !offer.checked));
     newArray.push(element);
   }
 
@@ -68,7 +68,7 @@ const createOfferListMarkup = (offerList) => {
 
 const createPhotoItem = (urlPhoto) => {
   return (
-    `<img class="event__photo" src="${urlPhoto}" alt="Event photo">`
+    `<img class="event__photo" src="${urlPhoto}" alt="event photo">`
   );
 };
 
@@ -82,8 +82,8 @@ const createPhotoListMarkup = (urlPhotoList) => {
 
 export const createEventEditTemplate = (event) => {
   const {eventList, isFavorite, locationList, dateStart, dateEnd, price, offerList, description, photos} = event;
-  const activeEvent = eventList.filter((it) => it.checked)[0];
-  const activeLocationList = locationList.filter((it) => it.checked)[0];
+  const ActiveEvent = eventList.filter((it) => it.checked)[0];
+  const ActiveLocation = locationList.filter((location) => location.checked)[0];
 
   return (
     `<li class="trip-events__item">
@@ -92,7 +92,7 @@ export const createEventEditTemplate = (event) => {
           <div class="event__type-wrapper">
             <label class="event__type  event__type-btn" for="event-type-toggle-1">
               <span class="visually-hidden">Choose event type</span>
-              <img class="event__type-icon" width="17" height="17" src="img/icons/${activeEvent.type}.png" alt="Event type icon">
+              <img class="event__type-icon" width="17" height="17" src="img/icons/${ActiveEvent.type}.png" alt="event type icon">
             </label>
             <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
@@ -100,14 +100,14 @@ export const createEventEditTemplate = (event) => {
               <fieldset class="event__type-group">
                 <legend class="visually-hidden">Transfer</legend>
 
-                ${createtemplateListMarkup(createEventItem, eventList, `transfer`)}
+                ${createTemplateListMarkup(createEventItem, eventList, `transfer`)}
 
               </fieldset>
 
               <fieldset class="event__type-group">
                 <legend class="visually-hidden">Activity</legend>
 
-                ${createtemplateListMarkup(createEventItem, eventList, `activity`)}
+                ${createTemplateListMarkup(createEventItem, eventList, `activity`)}
 
               </fieldset>
             </div>
@@ -117,9 +117,9 @@ export const createEventEditTemplate = (event) => {
             <label class="event__label  event__type-output" for="event-destination-1">
               Sightseeing at
             </label>
-            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${activeLocationList.title}" list="destination-list-1">
+            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${ActiveLocation.title}" list="destination-list-1">
             <datalist id="destination-list-1">
-              ${createtemplateListMarkup(createCityItem, locationList)}
+              ${createTemplateListMarkup(createCityItem, locationList)}
             </datalist>
           </div>
 
@@ -127,12 +127,12 @@ export const createEventEditTemplate = (event) => {
             <label class="visually-hidden" for="event-start-time-1">
               From
             </label>
-            <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${formatDateTime(dateStart)}">
+            <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${formatDateTime(dateStart).dateTime}">
             &mdash;
             <label class="visually-hidden" for="event-end-time-1">
               To
             </label>
-            <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${formatDateTime(dateEnd)}">
+            <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${formatDateTime(dateEnd).dateTime}">
           </div>
 
           <div class="event__field-group  event__field-group--price">

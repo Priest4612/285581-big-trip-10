@@ -3,10 +3,10 @@ import {castTimeFormat} from '../utils.js';
 import {createElement} from '../utils.js';
 
 const getDurationEvent = (start, end) => {
-  const duration = new Date(end - start);
-  const day = duration.getDay();
-  const hours = duration.getHours();
-  const minutes = duration.getMinutes();
+  const duration = end - start;
+  const day = Math.floor(duration / (24 * 60 * 60 * 1000));
+  const hours = Math.floor(duration % (24 * 60 * 60 * 1000) / (60 * 60 * 1000));
+  const minutes = Math.ceil(duration % (60 * 60 * 1000) / (60 * 1000));
 
   return `${day > 0 ? castTimeFormat(day) + `D ` : ``}${castTimeFormat(hours)}H ${(castTimeFormat(minutes))}M`;
 };
@@ -23,9 +23,9 @@ const createOfferItem = (offer) => {
 };
 
 
-const createOfferListMarkup = (offerList) => {
+const createOfferListMarkup = (offers) => {
   return Array
-  .from(offerList.filter((it) => it.checked))
+  .from(offers.filter((it) => it.checked))
   .map((offer) => {
     return createOfferItem(offer);
   }).join(`\n`);
@@ -34,16 +34,16 @@ const createOfferListMarkup = (offerList) => {
 
 const createEventTemplate = (event) => {
   const {eventList, locationList, dateStart, dateEnd, price, offerList} = event;
-  const activeEvent = eventList.filter((it) => it.checked)[0];
-  const activeLocationList = locationList.filter((it) => it.checked)[0];
+  const ActiveEvent = eventList.filter((it) => it.checked)[0];
+  const ActiveLocation = locationList.filter((it) => it.checked)[0];
 
   return (
     `<li class="trip-events__item">
       <div class="event">
         <div class="event__type">
-          <img class="event__type-icon" width="42" height="42" src="img/icons/${activeEvent.title}.png" alt="Event type icon">
+          <img class="event__type-icon" width="42" height="42" src="img/icons/${ActiveEvent.title}.png" alt="event type icon">
         </div>
-        <h3 class="event__title">${activeEvent.title} to ${activeLocationList.title}</h3>
+        <h3 class="event__title">${ActiveEvent.title} to ${ActiveLocation.title}</h3>
 
         <div class="event__schedule">
           <p class="event__time">
