@@ -51,7 +51,6 @@ const renderEvent = (eventListElement, event) => {
     if (!dayElement.querySelector(`form`)) {
       replaceEventToEdit();
       document.addEventListener(`keydown`, onEscKeyDown);
-      eventEditElement.getElement().removeEventListener(`submit`, replaceEditToEvent);
     }
   });
 
@@ -63,7 +62,10 @@ const renderEvent = (eventListElement, event) => {
     document.removeEventListener(`keydown`, onEscKeyDown);
   });
 
-  eventEditElement.getElement().addEventListener(`submit`, replaceEditToEvent);
+  eventEditElement.getElement().addEventListener(`submit`, () => {
+    replaceEditToEvent();
+    document.addEventListener(`keydown`, onEscKeyDown);
+  });
 
   render(eventListElement, eventElement.getElement(), RenderPosition.BEFOREEND);
 };
