@@ -75,11 +75,12 @@ const events = data;
 const sitePageBodyElement = document.querySelector(`.page-body`);
 const siteHeaderElement = sitePageBodyElement.querySelector(`.page-header`);
 
+const startTrip = events[0] ? events[0] : null;
+const endTrip = events[events.length - 1] ? events[events.length - 1] : null;
+const tripInfoElement = new TripInfoElement(startTrip, endTrip);
+
 const headerTripInfoElement = siteHeaderElement.querySelector(`.trip-info`);
-render(headerTripInfoElement, new TripInfoElement(
-    events[0],
-    events[events.length - 1])
-.getElement(), RenderPosition.AFTERBEGIN);
+render(headerTripInfoElement, tripInfoElement.getElement(), RenderPosition.AFTERBEGIN);
 const spanTripInfoElement = headerTripInfoElement.querySelector(`.trip-info__cost-value`);
 
 const headerTripControlsElement = siteHeaderElement.querySelector(`.trip-controls`);
