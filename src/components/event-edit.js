@@ -1,4 +1,5 @@
-import {formatDateTime, getRandomArrayItem} from '../utils.js';
+import {formatDateTime} from '../utils/date.js';
+import {getRandomArrayItem} from '../utils/common.js';
 import AbstractComponent from './abstract-component.js';
 
 
@@ -201,5 +202,17 @@ export default class EventEditElement extends AbstractComponent {
 
   getTemplate() {
     return createEventEditTemplate(this._event);
+  }
+
+  setSubmitHandler(handler) {
+    this.getElement()
+    .querySelector(`form`)
+    .addEventListener(`submit`, handler);
+  }
+
+  setCloseEditButtonClickHandler(handler) {
+    this.getElement()
+    .querySelector(`.event__rollup-btn`)
+    .addEventListener(`click`, handler);
   }
 }

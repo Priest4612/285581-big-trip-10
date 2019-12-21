@@ -1,5 +1,5 @@
-import {formatTime} from '../utils.js';
-import {castTimeFormat} from '../utils.js';
+import {formatTime} from '../utils/date.js';
+import {castTimeFormat} from '../utils/date.js';
 import AbstractComponent from './abstract-component.js';
 
 const getDurationEvent = (start, end) => {
@@ -83,5 +83,11 @@ export default class EventElement extends AbstractComponent {
 
   getTemplate() {
     return createEventTemplate(this._event);
+  }
+
+  setOpenEditButtonClickHandler(handler) {
+    this.getElement()
+    .querySelector(`.event__rollup-btn`)
+    .addEventListener(`click`, handler);
   }
 }
