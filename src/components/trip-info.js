@@ -39,7 +39,7 @@ const createTripInfoTemplate = (startTrip, endTrip) => {
 };
 
 
-export default class TripInfoElement extends AbstractComponent {
+export default class TripInfoComponent extends AbstractComponent {
   constructor(startTrip, endTrip) {
     super();
 

@@ -37,7 +37,7 @@ const createFilterTemplate = () => {
   );
 };
 
-export default class FilterElement extends AbstractComponent {
+export default class FilterComponent extends AbstractComponent {
   getTemplate() {
     return createFilterTemplate();
   }

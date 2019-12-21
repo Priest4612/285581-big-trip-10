@@ -26,7 +26,7 @@ const createSiteMenuTemplate = () => {
   );
 };
 
-export default class MenuElement extends AbstractComponent {
+export default class MenuComponent extends AbstractComponent {
   getTemplate() {
     return createSiteMenuTemplate();
   }

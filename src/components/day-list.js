@@ -9,7 +9,7 @@ const createDayListTemplate = () => {
 };
 
 
-export default class DayListContainer extends AbstractComponent {
+export default class DayListComponent extends AbstractComponent {
   getTemplate() {
     return createDayListTemplate();
   }

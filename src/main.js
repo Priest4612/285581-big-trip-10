@@ -2,20 +2,17 @@ import {data} from './mock/data.js';
 import TripInfoElement from './components/trip-info.js';
 import MenuElement from './components/site-menu.js';
 import FilterElement from './components/filter.js';
-import SortElement from './components/sort.js';
-import DayListElement from './components/day-list.js';
-import DayItem from './components/day.js';
-import EventContainer from './components/event-list.js';
-import EventEditElement from './components/event-edit.js';
-import EventElement from './components/event.js';
+import TripController from './controllers/trip-controller.js';
 import {render} from './utils/render.js';
 import {RenderPosition} from './utils/render.js';
-import {replace} from './utils/render.js';
-import NoEventElement from './components/no-event.js';
 
 
 const calculationTotal = (events) => {
   let total = 0;
+  if (events) {
+    total = 0;
+  }
+
   events.forEach((event) => {
     total += event.price;
   });
@@ -24,104 +21,43 @@ const calculationTotal = (events) => {
 };
 
 
-const renderEvent = (eventListElement, event) => {
-  const replaceEditToEvent = () => {
-    replace(eventElement, eventEditElement);
-  };
-
-
-  const replaceEventToEdit = () => {
-    replace(eventEditElement, eventElement);
-  };
-
-
-  const onEscKeyDown = (evt) => {
-    const isEscKey = evt.key === `Escape` || evt.kay === `Esc`;
-    if (isEscKey) {
-      replaceEditToEvent();
-      document.removeEventListener(`keydown`, onEscKeyDown);
+const sortDataByDate = (data) => {
+  const groupEventDate = [];
+  let currentDate = null;
+  events.forEach((event) => {
+    if (!currentDate || currentDate.getDate() !== event.dateStart.getDate()) {
+      currentDate = event.dateStart;
+      const Data = {};
+      Data.date = currentDate;
+      const array = events.filter((it) => it.dateStart.getDate() === currentDate.getDate());
+      Data.events = array;
+      groupEventDate.push(Data);
     }
-  };
+  });
 
-
-  const onOpenForm = () => {
-    const dayElement = document.querySelector(`.trip-days`);
-    if (!dayElement.querySelector(`form`)) {
-      replaceEventToEdit();
-      document.addEventListener(`keydown`, onEscKeyDown);
-    }
-  };
-
-
-  const onCloseForm = () => {
-    replaceEditToEvent();
-    document.addEventListener(`keydown`, onEscKeyDown);
-  };
-
-
-  const eventElement = new EventElement(event);
-  eventElement.setOpenEditButtonClickHandler(onOpenForm);
-
-  const eventEditElement = new EventEditElement(event);
-  eventEditElement.setSubmitHandler(onCloseForm);
-  eventEditElement.setCloseEditButtonClickHandler(onCloseForm);
-
-  render(eventListElement, eventElement.getElement(), RenderPosition.BEFOREEND);
+  return groupEventDate;
 };
+
 
 const events = data;
 
 const sitePageBodyElement = document.querySelector(`.page-body`);
 const siteHeaderElement = sitePageBodyElement.querySelector(`.page-header`);
+const headerTripInfoElement = siteHeaderElement.querySelector(`.trip-info`);
 
 const startTrip = events[0] ? events[0] : null;
 const endTrip = events[events.length - 1] ? events[events.length - 1] : null;
-const tripInfoElement = new TripInfoElement(startTrip, endTrip);
-
-const headerTripInfoElement = siteHeaderElement.querySelector(`.trip-info`);
-render(headerTripInfoElement, tripInfoElement.getElement(), RenderPosition.AFTERBEGIN);
+render(headerTripInfoElement, new TripInfoElement(startTrip, endTrip), RenderPosition.AFTERBEGIN);
 const spanTripInfoElement = headerTripInfoElement.querySelector(`.trip-info__cost-value`);
+spanTripInfoElement.innerHTML = calculationTotal(events);
 
 const headerTripControlsElement = siteHeaderElement.querySelector(`.trip-controls`);
 const headerHiddenElements = headerTripControlsElement.querySelectorAll(`.visually-hidden`);
-render(headerHiddenElements[0], new MenuElement().getElement(), RenderPosition.AFTEREND);
-render(headerHiddenElements[1], new FilterElement().getElement(), RenderPosition.AFTEREND);
+render(headerHiddenElements[0], new MenuElement(), RenderPosition.AFTEREND);
+render(headerHiddenElements[1], new FilterElement(), RenderPosition.AFTEREND);
 
 const siteMainElement = sitePageBodyElement.querySelector(`.page-main`);
 const mainTripEventsElement = siteMainElement.querySelector(`.trip-events`);
 
-
-const groupEventDate = [];
-let currentDate = null;
-events.forEach((event) => {
-  if (!currentDate || currentDate.getDate() !== event.dateStart.getDate()) {
-    currentDate = event.dateStart;
-    const Data = {};
-    Data.date = currentDate;
-    const array = events.filter((it) => it.dateStart.getDate() === currentDate.getDate());
-    Data.events = array;
-    groupEventDate.push(Data);
-  }
-});
-
-if (groupEventDate.length > 0) {
-  render(mainTripEventsElement, new SortElement().getElement(), RenderPosition.BEFOREEND);
-  render(mainTripEventsElement, new DayListElement().getElement(), RenderPosition.BEFOREEND);
-
-  const dayListElement = mainTripEventsElement.querySelector(`.trip-days`);
-
-  groupEventDate.forEach((day) => {
-    render(dayListElement, new DayItem(day.date).getElement(), RenderPosition.BEFOREEND);
-    const days = dayListElement.querySelectorAll(`.day`);
-    const dayElement = days[days.length - 1];
-    render(dayElement, new EventContainer().getElement(), RenderPosition.BEFOREEND);
-    const eventListElement = dayElement.querySelector(`.trip-events__list`);
-    day.events.forEach((event) => {
-      renderEvent(eventListElement, event);
-    });
-  });
-
-  spanTripInfoElement.innerHTML = calculationTotal(events);
-} else {
-  render(mainTripEventsElement, new NoEventElement().getElement(), RenderPosition.BEFOREEND);
-}
+const tripController = new TripController(mainTripEventsElement);
+tripController.render(sortDataByDate(data));

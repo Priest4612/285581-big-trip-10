@@ -8,7 +8,7 @@ const createNoEventTemplate = () => {
   );
 };
 
-export default class NoEventElement extends AbstractComponent {
+export default class NoEventComponent extends AbstractComponent {
   getTemplate() {
     return createNoEventTemplate();
   }

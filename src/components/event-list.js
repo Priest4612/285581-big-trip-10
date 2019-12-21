@@ -9,7 +9,7 @@ const createEventListTemplate = () => {
 };
 
 
-export default class EventContainer extends AbstractComponent {
+export default class EventListComponent extends AbstractComponent {
   getTemplate() {
     return createEventListTemplate();
   }

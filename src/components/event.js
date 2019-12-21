@@ -74,7 +74,7 @@ const createEventTemplate = (event) => {
 };
 
 
-export default class EventElement extends AbstractComponent {
+export default class EventComponent extends AbstractComponent {
   constructor(event) {
     super();
 
