@@ -1,6 +1,6 @@
 import {formatTime} from '../utils.js';
 import {castTimeFormat} from '../utils.js';
-import {createElement} from '../utils.js';
+import AbstractComponent from './abstract-component.js';
 
 const getDurationEvent = (start, end) => {
   const duration = end - start;
@@ -74,25 +74,14 @@ const createEventTemplate = (event) => {
 };
 
 
-export default class EventElement {
+export default class EventElement extends AbstractComponent {
   constructor(event) {
-    this._event = event;
+    super();
 
-    this._element = null;
+    this._event = event;
   }
 
   getTemplate() {
     return createEventTemplate(this._event);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

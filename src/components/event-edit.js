@@ -1,4 +1,5 @@
-import {formatDateTime, getRandomArrayItem, createElement} from '../utils.js';
+import {formatDateTime, getRandomArrayItem} from '../utils.js';
+import AbstractComponent from './abstract-component.js';
 
 
 const createTemplateListMarkup = (cb, dataList, group = ``) => {
@@ -80,7 +81,7 @@ const createPhotoListMarkup = (urlPhotoList) => {
 };
 
 
-export const createEventEditTemplate = (event) => {
+const createEventEditTemplate = (event) => {
   const {eventList, isFavorite, locationList, dateStart, dateEnd, price, offerList, description, photos} = event;
   const ActiveEvent = eventList.filter((it) => it.checked)[0];
   const ActiveLocation = locationList.filter((location) => location.checked)[0];
@@ -191,24 +192,14 @@ export const createEventEditTemplate = (event) => {
 };
 
 
-export default class EventEditElement {
+export default class EventEditElement extends AbstractComponent {
   constructor(event) {
+    super();
+
     this._event = event;
-    this._element = null;
   }
 
   getTemplate() {
     return createEventEditTemplate(this._event);
-  }
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

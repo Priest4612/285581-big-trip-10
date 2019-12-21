@@ -1,4 +1,4 @@
-import {createElement} from "../utils";
+import AbstractComponent from "./abstract-component";
 
 const createEventListTemplate = () => {
   return (
@@ -9,24 +9,8 @@ const createEventListTemplate = () => {
 };
 
 
-export default class EventContainer {
-  constructor() {
-    this._element = null;
-  }
-
+export default class EventContainer extends AbstractComponent {
   getTemplate() {
     return createEventListTemplate();
-  }
-
-  getElement() {
-    if (!this.element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

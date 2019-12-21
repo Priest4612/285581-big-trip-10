@@ -1,4 +1,5 @@
-import {createElement, formatDateTime} from "../utils";
+import AbstractComponent from "./abstract-component";
+import {formatDateTime} from "../utils";
 import {MonthList} from "../const";
 
 const createDateMarkup = (date) => {
@@ -21,25 +22,14 @@ const createDayTemplate = (date) => {
 };
 
 
-export default class DayItem {
+export default class DayItem extends AbstractComponent {
   constructor(date) {
+    super();
+
     this._date = date;
-    this._element = null;
   }
 
   getTemplate() {
     return createDayTemplate(this._date);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

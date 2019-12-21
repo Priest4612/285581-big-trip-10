@@ -1,5 +1,5 @@
 import {MenuList} from '../const.js';
-import {createElement} from "../utils";
+import AbstractComponent from './abstract-component.js';
 
 
 const createMenuItem = (menuItem) => {
@@ -26,24 +26,8 @@ const createSiteMenuTemplate = () => {
   );
 };
 
-export default class MenuElement {
-  constructor() {
-    this._element = null;
-  }
-
+export default class MenuElement extends AbstractComponent {
   getTemplate() {
     return createSiteMenuTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

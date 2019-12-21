@@ -1,5 +1,5 @@
 import {FilterList} from '../const.js';
-import {createElement} from '../utils.js';
+import AbstractComponent from './abstract-component.js';
 
 const createFilterItem = (filterItem) => {
   return (
@@ -37,24 +37,8 @@ const createFilterTemplate = () => {
   );
 };
 
-export default class FilterElement {
-  constructor() {
-    this._element = null;
-  }
-
+export default class FilterElement extends AbstractComponent {
   getTemplate() {
     return createFilterTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
