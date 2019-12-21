@@ -8,8 +8,9 @@ import DayItem from './components/day.js';
 import EventContainer from './components/event-list.js';
 import EventEditElement from './components/event-edit.js';
 import EventElement from './components/event.js';
-import {render} from './utils.js';
-import {RenderPosition} from './utils.js';
+import {render} from './utils/render.js';
+import {RenderPosition} from './utils/render.js';
+import {replace} from './utils/render.js';
 import NoEventElement from './components/no-event.js';
 
 
@@ -25,12 +26,12 @@ const calculationTotal = (events) => {
 
 const renderEvent = (eventListElement, event) => {
   const replaceEditToEvent = () => {
-    eventListElement.replaceChild(eventElement.getElement(), eventEditElement.getElement());
+    replace(eventElement, eventEditElement);
   };
 
 
   const replaceEventToEdit = () => {
-    eventListElement.replaceChild(eventEditElement.getElement(), eventElement.getElement());
+    replace(eventEditElement, eventElement);
   };
 
 
@@ -43,29 +44,27 @@ const renderEvent = (eventListElement, event) => {
   };
 
 
-  const eventElement = new EventElement(event);
-  const openEditButton = eventElement.getElement().querySelector(`.event__rollup-btn`);
-
-  openEditButton.addEventListener(`click`, () => {
+  const onOpenForm = () => {
     const dayElement = document.querySelector(`.trip-days`);
     if (!dayElement.querySelector(`form`)) {
       replaceEventToEdit();
       document.addEventListener(`keydown`, onEscKeyDown);
     }
-  });
+  };
 
-  const eventEditElement = new EventEditElement(event);
-  const closeEditButton = eventEditElement.getElement().querySelector(`.event__rollup-btn`);
 
-  closeEditButton.addEventListener(`click`, () => {
-    replaceEditToEvent();
-    document.removeEventListener(`keydown`, onEscKeyDown);
-  });
-
-  eventEditElement.getElement().addEventListener(`submit`, () => {
+  const onCloseForm = () => {
     replaceEditToEvent();
     document.addEventListener(`keydown`, onEscKeyDown);
-  });
+  };
+
+
+  const eventElement = new EventElement(event);
+  eventElement.setOpenEditButtonClickHandler(onOpenForm);
+
+  const eventEditElement = new EventEditElement(event);
+  eventEditElement.setSubmitHandler(onCloseForm);
+  eventEditElement.setCloseEditButtonClickHandler(onCloseForm);
 
   render(eventListElement, eventElement.getElement(), RenderPosition.BEFOREEND);
 };

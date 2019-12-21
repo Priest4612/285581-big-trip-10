@@ -1,5 +1,5 @@
-import AbstractComponent from "./abstract-component";
-import {formatDateTime} from "../utils";
+import AbstractComponent from "./abstract-component.js";
+import {formatDateTime} from "../utils/date.js";
 import {MonthList} from "../const";
 
 const createDateMarkup = (date) => {
