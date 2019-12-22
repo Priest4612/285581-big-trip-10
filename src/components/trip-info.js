@@ -7,7 +7,7 @@ const createTripInfoTemplate = (startTrip, endTrip) => {
   let intervalDateTemplate = null;
   if (!startTrip && !endTrip) {
     // моя заглушка
-    template = `<p></p>`;
+    template = `<div class="trip-info__main"></div>`;
   } else {
     const startLocation = startTrip.locationList.filter((it)=>it.checked);
     const endLocation = endTrip.locationList.filter((it)=>it.checked);

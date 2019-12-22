@@ -21,24 +21,6 @@ const calculationTotal = (points) => {
 };
 
 
-const sortDataByDate = (points) => {
-  const groupPointByDate = [];
-  let currentDate = null;
-  points.forEach((point) => {
-    if (!currentDate || currentDate.getDate() !== point.dateStart.getDate()) {
-      currentDate = point.dateStart;
-      const Data = {};
-      Data.date = currentDate;
-      const array = points.filter((it) => it.dateStart.getDate() === currentDate.getDate());
-      Data.points = array;
-      groupPointByDate.push(Data);
-    }
-  });
-
-  return groupPointByDate;
-};
-
-
 const points = data;
 
 const sitePageBodyElement = document.querySelector(`.page-body`);
@@ -60,4 +42,4 @@ const siteMainElement = sitePageBodyElement.querySelector(`.page-main`);
 const mainTripEventsElement = siteMainElement.querySelector(`.trip-events`);
 
 const tripController = new TripController(mainTripEventsElement);
-tripController.render(sortDataByDate(data));
+tripController.render(points);
