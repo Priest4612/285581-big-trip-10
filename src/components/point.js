@@ -1,5 +1,6 @@
 import {formatTime} from '../utils/date.js';
 import {castTimeFormat} from '../utils/date.js';
+import {formatDateTime} from '../utils/date.js';
 import AbstractComponent from './abstract-component.js';
 
 const getDurationPoint = (start, end) => {
@@ -47,9 +48,9 @@ const createPointTemplate = (point) => {
 
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime="2019-03-18T10:30">${formatTime(dateStart)}</time>
+            <time class="event__start-time" datetime="${formatDateTime(dateStart).dateTimePoint}">${formatTime(dateStart)}</time>
             &mdash;
-            <time class="event__end-time" datetime="2019-03-18T11:00">${formatTime(dateEnd)}</time>
+            <time class="event__end-time" datetime="${formatDateTime(dateEnd).dateTimePoint}">${formatTime(dateEnd)}</time>
           </p>
           <p class="event__duration">${getDurationPoint(dateStart, dateEnd)}</p>
         </div>

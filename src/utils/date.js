@@ -50,6 +50,7 @@ export const formatDateTime = (date) => {
 
   return {
     date: `${yyyy}-${mm}-${dd}`,
-    dateTime: `${dd}/${mm}/${String(yyyy).slice(2)} ${hours}:${minutes}`,
+    dateTimeEdit: `${dd}/${mm}/${String(yyyy).slice(2)} ${hours}:${minutes}`,
+    dateTimePoint: `${yyyy}-${mm}-${dd}T${hours}:${minutes}`,
   };
 };
