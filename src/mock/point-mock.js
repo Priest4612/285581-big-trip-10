@@ -64,8 +64,8 @@ const generateActiveElements = (array, count) => {
 };
 
 
-const сalculationСostEvent = (offers, events) => {
-  let cost = events.filter((item) => item.checked)[0].price;
+const сalculationСostPoint = (offers, points) => {
+  let cost = points.filter((item) => item.checked)[0].price;
 
   for (const offer of offers) {
     if (offer.checked) {
@@ -77,10 +77,10 @@ const сalculationСostEvent = (offers, events) => {
 };
 
 
-const groupEvent = (events, group) => {
+const groupPoint = (points, group) => {
   const newArray = [];
 
-  events.forEach((obj) =>{
+  points.forEach((obj) =>{
     obj.group = group;
     newArray.push(obj);
   });
@@ -89,36 +89,36 @@ const groupEvent = (events, group) => {
 
 
 let currentDate = null;
-const START_DAY_EVENT = 1;
+const START_DAY_POINT = 1;
 const INTERVAL_HOURS = 2;
 
-const generateEvent = () => {
-  const transfer = groupEvent(cloneArray(TransferList), `transfer`);
-  const activities = groupEvent(cloneArray(ActivityList), `activity`);
+const generatePoint = () => {
+  const transfer = groupPoint(cloneArray(TransferList), `transfer`);
+  const activities = groupPoint(cloneArray(ActivityList), `activity`);
 
-  const sourceEventList = transfer.concat(activities);
+  const sourcePointList = transfer.concat(activities);
   const currentOfferList = cloneArray(OfferList);
   const currentCityList = cloneArray(CityList);
 
   const OFFER_MIN_COUNT = 0;
   const OFFER_MAX_COUNT = 3;
 
-  const eventList = generateActiveElements(generatePriceElements(sourceEventList), 1);
+  const pointList = generateActiveElements(generatePriceElements(sourcePointList), 1);
   const activeOfferList = generateActiveElements(generatePriceElements(currentOfferList), getRandomInteger(OFFER_MIN_COUNT, OFFER_MAX_COUNT));
 
   const cityList = generateActiveElements(currentCityList, 1);
-  const costEvent = сalculationСostEvent(activeOfferList, eventList);
+  const costPoint = сalculationСostPoint(activeOfferList, pointList);
 
-  const dateDay = getRandomDateDay(currentDate, START_DAY_EVENT, INTERVAL_HOURS);
+  const dateDay = getRandomDateDay(currentDate, START_DAY_POINT, INTERVAL_HOURS);
   currentDate = dateDay.dateEnd;
 
   return {
-    eventList,
+    pointList,
     isFavorite: Math.random() > 0.5,
     locationList: cityList,
     dateStart: dateDay.dateStart,
     dateEnd: dateDay.dateEnd,
-    price: costEvent,
+    price: costPoint,
     offerList: activeOfferList,
     description: generateDescription(),
     photos: generatePhotos(),
@@ -126,10 +126,10 @@ const generateEvent = () => {
 };
 
 
-const generateEvents = (count) => {
+const generatePoints = (count) => {
   return new Array(count)
   .fill(``)
-  .map(generateEvent);
+  .map(generatePoint);
 };
 
-export {generateEvents};
+export {generatePoints};

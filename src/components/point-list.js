@@ -1,6 +1,6 @@
 import AbstractComponent from "./abstract-component";
 
-const createEventListTemplate = () => {
+const createPointListTemplate = () => {
   return (
     `<ul class="trip-events__list">
 
@@ -9,8 +9,8 @@ const createEventListTemplate = () => {
 };
 
 
-export default class EventListComponent extends AbstractComponent {
+export default class PointListComponent extends AbstractComponent {
   getTemplate() {
-    return createEventListTemplate();
+    return createPointListTemplate();
   }
 }

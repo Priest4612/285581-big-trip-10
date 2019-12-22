@@ -9,13 +9,13 @@ const getRandomHours = (date, intervalHours) => {
 };
 
 
-export const getRandomDateDay = (referencePoint = null, startDayEvent = 3, intervalHours = 8) => {
+export const getRandomDateDay = (referencePoint = null, startDayPoint = 3, intervalHours = 8) => {
   let dateStart = 0;
   let dateEnd = 0;
 
   if (!referencePoint) {
     const targetDate = new Date();
-    targetDate.setDate(targetDate.getDate() - getRandomInteger(0, startDayEvent));
+    targetDate.setDate(targetDate.getDate() - getRandomInteger(0, startDayPoint));
     dateStart = getRandomHours(targetDate, intervalHours);
     dateEnd = getRandomHours(dateStart, intervalHours);
   } else {

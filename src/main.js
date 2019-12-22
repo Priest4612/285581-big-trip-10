@@ -7,49 +7,49 @@ import {render} from './utils/render.js';
 import {RenderPosition} from './utils/render.js';
 
 
-const calculationTotal = (events) => {
+const calculationTotal = (points) => {
   let total = 0;
-  if (events) {
+  if (points) {
     total = 0;
   }
 
-  events.forEach((event) => {
-    total += event.price;
+  points.forEach((point) => {
+    total += point.price;
   });
 
   return total;
 };
 
 
-const sortDataByDate = (data) => {
-  const groupEventDate = [];
+const sortDataByDate = (points) => {
+  const groupPointByDate = [];
   let currentDate = null;
-  events.forEach((event) => {
-    if (!currentDate || currentDate.getDate() !== event.dateStart.getDate()) {
-      currentDate = event.dateStart;
+  points.forEach((point) => {
+    if (!currentDate || currentDate.getDate() !== point.dateStart.getDate()) {
+      currentDate = point.dateStart;
       const Data = {};
       Data.date = currentDate;
-      const array = events.filter((it) => it.dateStart.getDate() === currentDate.getDate());
-      Data.events = array;
-      groupEventDate.push(Data);
+      const array = points.filter((it) => it.dateStart.getDate() === currentDate.getDate());
+      Data.points = array;
+      groupPointByDate.push(Data);
     }
   });
 
-  return groupEventDate;
+  return groupPointByDate;
 };
 
 
-const events = data;
+const points = data;
 
 const sitePageBodyElement = document.querySelector(`.page-body`);
 const siteHeaderElement = sitePageBodyElement.querySelector(`.page-header`);
 const headerTripInfoElement = siteHeaderElement.querySelector(`.trip-info`);
 
-const startTrip = events[0] ? events[0] : null;
-const endTrip = events[events.length - 1] ? events[events.length - 1] : null;
+const startTrip = points[0] ? points[0] : null;
+const endTrip = points[points.length - 1] ? points[points.length - 1] : null;
 render(headerTripInfoElement, new TripInfoElement(startTrip, endTrip), RenderPosition.AFTERBEGIN);
 const spanTripInfoElement = headerTripInfoElement.querySelector(`.trip-info__cost-value`);
-spanTripInfoElement.innerHTML = calculationTotal(events);
+spanTripInfoElement.innerHTML = calculationTotal(points);
 
 const headerTripControlsElement = siteHeaderElement.querySelector(`.trip-controls`);
 const headerHiddenElements = headerTripControlsElement.querySelectorAll(`.visually-hidden`);

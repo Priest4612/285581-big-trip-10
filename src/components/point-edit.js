@@ -20,12 +20,12 @@ const createTemplateListMarkup = (cb, dataList, group = ``) => {
 };
 
 
-const createEventItem = (event) => {
+const createPointItem = (point) => {
   return (
     `<div class="event__type-item">
-      <input id="event-type-${event.type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${event.type}"
-      ${event.checked ? `checked` : ``}>
-      <label class="event__type-label  event__type-label--${event.type}" for="event-type-${event.type}-1">${event.title[0].toUpperCase() + event.title.slice(1)}</label>
+      <input id="event-type-${point.type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${point.type}"
+      ${point.checked ? `checked` : ``}>
+      <label class="event__type-label  event__type-label--${point.type}" for="event-type-${point.type}-1">${point.title[0].toUpperCase() + point.title.slice(1)}</label>
     </div>`
   );
 };
@@ -82,9 +82,9 @@ const createPhotoListMarkup = (urlPhotoList) => {
 };
 
 
-const createEventEditTemplate = (event) => {
-  const {eventList, isFavorite, locationList, dateStart, dateEnd, price, offerList, description, photos} = event;
-  const ActiveEvent = eventList.filter((it) => it.checked)[0];
+const createEventEditTemplate = (point) => {
+  const {pointList, isFavorite, locationList, dateStart, dateEnd, price, offerList, description, photos} = point;
+  const ActivePoint = pointList.filter((it) => it.checked)[0];
   const ActiveLocation = locationList.filter((location) => location.checked)[0];
 
   return (
@@ -94,7 +94,7 @@ const createEventEditTemplate = (event) => {
           <div class="event__type-wrapper">
             <label class="event__type  event__type-btn" for="event-type-toggle-1">
               <span class="visually-hidden">Choose event type</span>
-              <img class="event__type-icon" width="17" height="17" src="img/icons/${ActiveEvent.type}.png" alt="event type icon">
+              <img class="event__type-icon" width="17" height="17" src="img/icons/${ActivePoint.type}.png" alt="event type icon">
             </label>
             <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
@@ -102,14 +102,14 @@ const createEventEditTemplate = (event) => {
               <fieldset class="event__type-group">
                 <legend class="visually-hidden">Transfer</legend>
 
-                ${createTemplateListMarkup(createEventItem, eventList, `transfer`)}
+                ${createTemplateListMarkup(createPointItem, pointList, `transfer`)}
 
               </fieldset>
 
               <fieldset class="event__type-group">
                 <legend class="visually-hidden">Activity</legend>
 
-                ${createTemplateListMarkup(createEventItem, eventList, `activity`)}
+                ${createTemplateListMarkup(createPointItem, pointList, `activity`)}
 
               </fieldset>
             </div>
@@ -193,15 +193,15 @@ const createEventEditTemplate = (event) => {
 };
 
 
-export default class EventEditComponent extends AbstractComponent {
-  constructor(event) {
+export default class PointEditComponent extends AbstractComponent {
+  constructor(point) {
     super();
 
-    this._event = event;
+    this._point = point;
   }
 
   getTemplate() {
-    return createEventEditTemplate(this._event);
+    return createEventEditTemplate(this._point);
   }
 
   setSubmitHandler(handler) {

@@ -1,7 +1,7 @@
-import {generateEvents} from './event-mock.js';
+import {generatePoints} from './point-mock.js';
 
-const EVENT_COUNT = Math.random() > 0.8 ? 0 : 20;
+const POINT_COUNT = Math.random() > 0.8 ? 0 : 20;
 
-const data = generateEvents(EVENT_COUNT);
+const data = generatePoints(POINT_COUNT);
 
 export {data};

@@ -2,7 +2,7 @@ import {formatTime} from '../utils/date.js';
 import {castTimeFormat} from '../utils/date.js';
 import AbstractComponent from './abstract-component.js';
 
-const getDurationEvent = (start, end) => {
+const getDurationPoint = (start, end) => {
   const duration = end - start;
   const day = Math.floor(duration / (24 * 60 * 60 * 1000));
   const hours = Math.floor(duration % (24 * 60 * 60 * 1000) / (60 * 60 * 1000));
@@ -32,18 +32,18 @@ const createOfferListMarkup = (offers) => {
 };
 
 
-const createEventTemplate = (event) => {
-  const {eventList, locationList, dateStart, dateEnd, price, offerList} = event;
-  const ActiveEvent = eventList.filter((it) => it.checked)[0];
+const createPointTemplate = (point) => {
+  const {pointList, locationList, dateStart, dateEnd, price, offerList} = point;
+  const ActivePoint = pointList.filter((it) => it.checked)[0];
   const ActiveLocation = locationList.filter((it) => it.checked)[0];
 
   return (
     `<li class="trip-events__item">
       <div class="event">
         <div class="event__type">
-          <img class="event__type-icon" width="42" height="42" src="img/icons/${ActiveEvent.title}.png" alt="event type icon">
+          <img class="event__type-icon" width="42" height="42" src="img/icons/${ActivePoint.title}.png" alt="event type icon">
         </div>
-        <h3 class="event__title">${ActiveEvent.title} to ${ActiveLocation.title}</h3>
+        <h3 class="event__title">${ActivePoint.title} to ${ActiveLocation.title}</h3>
 
         <div class="event__schedule">
           <p class="event__time">
@@ -51,7 +51,7 @@ const createEventTemplate = (event) => {
             &mdash;
             <time class="event__end-time" datetime="2019-03-18T11:00">${formatTime(dateEnd)}</time>
           </p>
-          <p class="event__duration">${getDurationEvent(dateStart, dateEnd)}</p>
+          <p class="event__duration">${getDurationPoint(dateStart, dateEnd)}</p>
         </div>
 
         <p class="event__price">
@@ -74,15 +74,15 @@ const createEventTemplate = (event) => {
 };
 
 
-export default class EventComponent extends AbstractComponent {
-  constructor(event) {
+export default class PointComponent extends AbstractComponent {
+  constructor(point) {
     super();
 
-    this._event = event;
+    this._point = point;
   }
 
   getTemplate() {
-    return createEventTemplate(this._event);
+    return createPointTemplate(this._point);
   }
 
   setOpenEditButtonClickHandler(handler) {

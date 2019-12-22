@@ -1,29 +1,29 @@
 import SortComponent from '../components/sort.js';
 import DayListComponent from '../components/day-list.js';
 import DayComponent from '../components/day.js';
-import EventListComponent from '../components/event-list.js';
-import EventEditComponent from '../components/event-edit.js';
-import EventComponent from '../components/event.js';
+import PointListComponent from '../components/point-list.js';
+import PointEditComponent from '../components/point-edit.js';
+import PointComponent from '../components/point.js';
 import {render} from '../utils/render.js';
 import {RenderPosition} from '../utils/render.js';
 import {replace} from '../utils/render.js';
-import NoEventComponent from '../components/no-event.js';
+import NoPointComponent from '../components/no-point.js';
 
-const renderEvent = (eventListComponent, event) => {
-  const replaceEditToEvent = () => {
-    replace(eventComponent, eventEditComponent);
+const renderPoint = (pointListComponent, point) => {
+  const replaceEditToPoint = () => {
+    replace(pointComponent, pointEditComponent);
   };
 
 
-  const replaceEventToEdit = () => {
-    replace(eventEditComponent, eventComponent);
+  const replacePointToEdit = () => {
+    replace(pointEditComponent, pointComponent);
   };
 
 
   const onEscKeyDown = (evt) => {
     const isEscKey = evt.key === `Escape` || evt.kay === `Esc`;
     if (isEscKey) {
-      replaceEditToEvent();
+      replaceEditToPoint();
       document.removeEventListener(`keydown`, onEscKeyDown);
     }
   };
@@ -32,45 +32,45 @@ const renderEvent = (eventListComponent, event) => {
   const onOpenForm = () => {
     const dayElement = document.querySelector(`.trip-days`);
     if (!dayElement.querySelector(`form`)) {
-      replaceEventToEdit();
+      replacePointToEdit();
       document.addEventListener(`keydown`, onEscKeyDown);
     }
   };
 
 
   const onCloseForm = () => {
-    replaceEditToEvent();
+    replaceEditToPoint();
     document.addEventListener(`keydown`, onEscKeyDown);
   };
 
 
-  const eventComponent = new EventComponent(event);
-  eventComponent.setOpenEditButtonClickHandler(onOpenForm);
+  const pointComponent = new PointComponent(point);
+  pointComponent.setOpenEditButtonClickHandler(onOpenForm);
 
-  const eventEditComponent = new EventEditComponent(event);
-  eventEditComponent.setSubmitHandler(onCloseForm);
-  eventEditComponent.setCloseEditButtonClickHandler(onCloseForm);
+  const pointEditComponent = new PointEditComponent(point);
+  pointEditComponent.setSubmitHandler(onCloseForm);
+  pointEditComponent.setCloseEditButtonClickHandler(onCloseForm);
 
-  render(eventListComponent, eventComponent, RenderPosition.BEFOREEND);
+  render(pointListComponent, pointComponent, RenderPosition.BEFOREEND);
 };
 
 
-const renderEvents = (eventListComponent, events) => {
-  events.forEach((event) => {
-    renderEvent(eventListComponent, event);
+const renderPoints = (pointListComponent, points) => {
+  points.forEach((point) => {
+    renderPoint(pointListComponent, point);
   });
 };
 
 
 const renderDay = (dayListComponent, day) => {
   const dayElement = new DayComponent(day.date);
-  const eventListElement = new EventListComponent();
+  const pointListElement = new PointListComponent();
 
   render(dayListComponent, dayElement, RenderPosition.BEFOREEND);
 
-  render(dayElement.getElement(), eventListElement, RenderPosition.BEFOREEND);
+  render(dayElement.getElement(), pointListElement, RenderPosition.BEFOREEND);
 
-  renderEvents(eventListElement.getElement(), day.events);
+  renderPoints(pointListElement.getElement(), day.points);
 };
 
 
@@ -85,7 +85,7 @@ export default class TripController {
   constructor(container) {
     this._container = container;
 
-    this._noEventComponent = new NoEventComponent();
+    this._noPointComponent = new NoPointComponent();
     this._sortComponent = new SortComponent();
     this._dayListComponent = new DayListComponent();
   }
@@ -101,7 +101,7 @@ export default class TripController {
 
       renderDays(dayListElement, days);
     } else {
-      render(container, this._noEventComponent, RenderPosition.BEFOREEND);
+      render(container, this._noPointComponent, RenderPosition.BEFOREEND);
     }
   }
 }
