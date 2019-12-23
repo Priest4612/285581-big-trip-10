@@ -5,10 +5,10 @@ import DayComponent from '../components/day.js';
 import PointListComponent from '../components/point-list.js';
 import PointEditComponent from '../components/point-edit.js';
 import PointComponent from '../components/point.js';
+import NoPointComponent from '../components/no-point.js';
 import {render} from '../utils/render.js';
 import {RenderPosition} from '../utils/render.js';
 import {replace} from '../utils/render.js';
-import NoPointComponent from '../components/no-point.js';
 import {formatDateTime} from '../utils/date';
 
 const renderPoint = (pointListComponent, point) => {
