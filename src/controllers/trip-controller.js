@@ -42,7 +42,7 @@ const renderPoint = (pointListComponent, point) => {
 
   const onCloseForm = () => {
     replaceEditToPoint();
-    document.addEventListener(`keydown`, onEscKeyDown);
+    document.removeEventListener(`keydown`, onEscKeyDown);
   };
 
 

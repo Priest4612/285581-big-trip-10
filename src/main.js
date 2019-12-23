@@ -9,8 +9,8 @@ import {RenderPosition} from './utils/render.js';
 
 const calculationTotal = (points) => {
   let total = 0;
-  if (points) {
-    total = 0;
+  if (!points) {
+    return total;
   }
 
   points.forEach((point) => {
