@@ -1,5 +1,5 @@
-import {createElement} from "../utils";
 import {MonthList} from "../const";
+import AbstractComponent from "./abstract-component";
 
 
 const createTripInfoTemplate = (startTrip, endTrip) => {
@@ -7,7 +7,7 @@ const createTripInfoTemplate = (startTrip, endTrip) => {
   let intervalDateTemplate = null;
   if (!startTrip && !endTrip) {
     // моя заглушка
-    template = `<p></p>`;
+    template = `<div class="trip-info__main"></div>`;
   } else {
     const startLocation = startTrip.locationList.filter((it)=>it.checked);
     const endLocation = endTrip.locationList.filter((it)=>it.checked);
@@ -39,27 +39,15 @@ const createTripInfoTemplate = (startTrip, endTrip) => {
 };
 
 
-export default class TripInfoElement {
+export default class TripInfoComponent extends AbstractComponent {
   constructor(startTrip, endTrip) {
+    super();
+
     this._startTrip = startTrip;
     this._endTrip = endTrip;
-
-    this._element = null;
   }
 
   getTemplate() {
     return createTripInfoTemplate(this._startTrip, this._endTrip);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

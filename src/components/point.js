@@ -1,8 +1,9 @@
-import {formatTime} from '../utils.js';
-import {castTimeFormat} from '../utils.js';
-import {createElement} from '../utils.js';
+import {formatTime} from '../utils/date.js';
+import {castTimeFormat} from '../utils/date.js';
+import {formatDateTime} from '../utils/date.js';
+import AbstractComponent from './abstract-component.js';
 
-const getDurationEvent = (start, end) => {
+const getDurationPoint = (start, end) => {
   const duration = end - start;
   const day = Math.floor(duration / (24 * 60 * 60 * 1000));
   const hours = Math.floor(duration % (24 * 60 * 60 * 1000) / (60 * 60 * 1000));
@@ -32,26 +33,26 @@ const createOfferListMarkup = (offers) => {
 };
 
 
-const createEventTemplate = (event) => {
-  const {eventList, locationList, dateStart, dateEnd, price, offerList} = event;
-  const ActiveEvent = eventList.filter((it) => it.checked)[0];
+const createPointTemplate = (point) => {
+  const {pointList, locationList, dateStart, dateEnd, price, offerList} = point;
+  const ActivePoint = pointList.filter((it) => it.checked)[0];
   const ActiveLocation = locationList.filter((it) => it.checked)[0];
 
   return (
     `<li class="trip-events__item">
       <div class="event">
         <div class="event__type">
-          <img class="event__type-icon" width="42" height="42" src="img/icons/${ActiveEvent.title}.png" alt="event type icon">
+          <img class="event__type-icon" width="42" height="42" src="img/icons/${ActivePoint.title}.png" alt="event type icon">
         </div>
-        <h3 class="event__title">${ActiveEvent.title} to ${ActiveLocation.title}</h3>
+        <h3 class="event__title">${ActivePoint.title} to ${ActiveLocation.title}</h3>
 
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime="2019-03-18T10:30">${formatTime(dateStart)}</time>
+            <time class="event__start-time" datetime="${formatDateTime(dateStart).dateTimePoint}">${formatTime(dateStart)}</time>
             &mdash;
-            <time class="event__end-time" datetime="2019-03-18T11:00">${formatTime(dateEnd)}</time>
+            <time class="event__end-time" datetime="${formatDateTime(dateEnd).dateTimePoint}">${formatTime(dateEnd)}</time>
           </p>
-          <p class="event__duration">${getDurationEvent(dateStart, dateEnd)}</p>
+          <p class="event__duration">${getDurationPoint(dateStart, dateEnd)}</p>
         </div>
 
         <p class="event__price">
@@ -74,25 +75,20 @@ const createEventTemplate = (event) => {
 };
 
 
-export default class EventElement {
-  constructor(event) {
-    this._event = event;
+export default class PointComponent extends AbstractComponent {
+  constructor(point) {
+    super();
 
-    this._element = null;
+    this._point = point;
   }
 
   getTemplate() {
-    return createEventTemplate(this._event);
+    return createPointTemplate(this._point);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setOpenEditButtonClickHandler(handler) {
+    this.getElement()
+    .querySelector(`.event__rollup-btn`)
+    .addEventListener(`click`, handler);
   }
 }
