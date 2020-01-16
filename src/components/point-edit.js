@@ -82,7 +82,7 @@ const createPhotoListMarkup = (urlPhotoList) => {
 };
 
 
-const createEventEditTemplate = (point) => {
+const createPointEditTemplate = (point) => {
   const {pointList, isFavorite, locationList, dateStart, dateEnd, price, offerList, description, photos} = point;
   const ActivePoint = pointList.filter((it) => it.checked)[0];
   const ActiveLocation = locationList.filter((location) => location.checked)[0];
@@ -201,18 +201,21 @@ export default class PointEditComponent extends AbstractComponent {
   }
 
   getTemplate() {
-    return createEventEditTemplate(this._point);
+    return createPointEditTemplate(this._point);
   }
 
   setSubmitHandler(handler) {
-    this.getElement()
-    .querySelector(`form`)
-    .addEventListener(`submit`, handler);
+    this.getElement().querySelector(`form`)
+      .addEventListener(`submit`, handler);
   }
 
   setCloseEditButtonClickHandler(handler) {
-    this.getElement()
-    .querySelector(`.event__rollup-btn`)
-    .addEventListener(`click`, handler);
+    this.getElement().querySelector(`.event__rollup-btn`)
+      .addEventListener(`click`, handler);
+  }
+
+  setFavoritesButtonClickHandler(handler) {
+    this.getElement().querySelector(`.event__favorite-btn`)
+      .addEventListener(`click`, handler);
   }
 }
