@@ -10,13 +10,15 @@ const Mode = {
 
 
 export default class PointController {
-  constructor(container) {
+  constructor(container, onDataChange) {
     this._container = container;
 
     this._mode = Mode.DEFAULT;
 
     this._pointComponent = null;
     this._pointEditComponent = null;
+
+    this._onDataChange = onDataChange;
 
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
     this._onCloseForm = this._onCloseForm.bind(this);
@@ -36,6 +38,12 @@ export default class PointController {
 
     this._pointEditComponent.setSubmitHandler(this._onCloseForm);
     this._pointEditComponent.setCloseEditButtonClickHandler(this._onCloseForm);
+
+    this._pointEditComponent.setFavoritesButtonClickHandler(() => {
+      this._onDataChange(this, point, Object.assign({}, point, {
+        isFavorite: !point.isFavorite,
+      }));
+    });
 
     if (oldPointEditComponent && oldPointComponent) {
       replace(this._pointComponent, oldPointComponent);
