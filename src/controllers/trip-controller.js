@@ -3,66 +3,20 @@ import {SortType} from '../components/sort.js';
 import DayListComponent from '../components/day-list.js';
 import DayComponent from '../components/day.js';
 import PointListComponent from '../components/point-list.js';
-import PointEditComponent from '../components/point-edit.js';
-import PointComponent from '../components/point.js';
 import NoPointComponent from '../components/no-point.js';
 import {render} from '../utils/render.js';
 import {RenderPosition} from '../utils/render.js';
-import {replace} from '../utils/render.js';
 import {formatDateTime} from '../utils/date';
-
-const renderPoint = (pointListComponent, point) => {
-  const replaceEditToPoint = () => {
-    replace(pointComponent, pointEditComponent);
-  };
-
-
-  const replacePointToEdit = () => {
-    replace(pointEditComponent, pointComponent);
-  };
-
-
-  const onEscKeyDown = (evt) => {
-    const isEscKey = evt.key === `Escape` || evt.kay === `Esc`;
-    if (isEscKey) {
-      replaceEditToPoint();
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    }
-  };
-
-
-  const onOpenForm = () => {
-    const dayElement = document.querySelector(`.trip-days`);
-    if (!dayElement.querySelector(`form`)) {
-      replacePointToEdit();
-      document.addEventListener(`keydown`, onEscKeyDown);
-    }
-  };
-
-
-  const onCloseForm = () => {
-    replaceEditToPoint();
-    document.removeEventListener(`keydown`, onEscKeyDown);
-  };
-
-
-  const pointComponent = new PointComponent(point);
-  pointComponent.setOpenEditButtonClickHandler(onOpenForm);
-
-  const pointEditComponent = new PointEditComponent(point);
-  pointEditComponent.setSubmitHandler(onCloseForm);
-  pointEditComponent.setCloseEditButtonClickHandler(onCloseForm);
-
-  render(pointListComponent, pointComponent, RenderPosition.BEFOREEND);
-};
-
+import PointController from './point-controller.js';
 
 const renderPoints = (pointListComponent, points) => {
-  points.forEach((point) => {
-    renderPoint(pointListComponent, point);
+  return points.map((point) => {
+    const pointController = new PointController(pointListComponent);
+    pointController.render(point);
+
+    return pointController;
   });
 };
-
 
 const renderDay = (dayListComponent, points, date, isDefaultSorting) => {
   const currentPoints = isDefaultSorting
@@ -79,7 +33,6 @@ const renderDay = (dayListComponent, points, date, isDefaultSorting) => {
   render(dayElement.getElement(), pointListElement, RenderPosition.BEFOREEND);
   renderPoints(pointListElement.getElement(), currentPoints);
 };
-
 
 const renderDays = (dayListComponent, points, isDefaultSorting = true) => {
   const dates = isDefaultSorting
