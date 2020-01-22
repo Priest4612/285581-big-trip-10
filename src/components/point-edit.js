@@ -1,6 +1,6 @@
 import {formatDateTime} from '../utils/date.js';
 import {getRandomArrayItem} from '../utils/common.js';
-import AbstractComponent from './abstract-component.js';
+import AbstractSmartComponent from './abstract-smart-component.js';
 
 
 const createTemplateListMarkup = (cb, dataList, group = ``) => {
@@ -13,10 +13,9 @@ const createTemplateListMarkup = (cb, dataList, group = ``) => {
     array.concat(dataList);
   }
 
-  return Array
-  .from(array)
-  .map((item) => cb(item))
-  .join(`\n`);
+  return Array.from(array)
+    .map((item) => cb(item))
+    .join(`\n`);
 };
 
 
@@ -61,10 +60,9 @@ const createOfferListMarkup = (offers) => {
     newArray.push(element);
   }
 
-  return Array
-  .from(newArray)
-  .map((offer) => createOfferItem(offer))
-  .join(`\n`);
+  return Array.from(newArray)
+    .map((offer) => createOfferItem(offer))
+    .join(`\n`);
 };
 
 
@@ -77,8 +75,8 @@ const createPhotoItem = (urlPhoto) => {
 
 const createPhotoListMarkup = (urlPhotoList) => {
   return Array.from(urlPhotoList)
-  .map((urlPhoto) => createPhotoItem(urlPhoto))
-  .join(`\n`);
+    .map((urlPhoto) => createPhotoItem(urlPhoto))
+    .join(`\n`);
 };
 
 
@@ -193,29 +191,39 @@ const createPointEditTemplate = (point) => {
 };
 
 
-export default class PointEditComponent extends AbstractComponent {
+export default class PointEditComponent extends AbstractSmartComponent {
   constructor(point) {
     super();
 
     this._point = point;
+    // this._typePoint = point.pointList;
+    // this._location = point.locationList;
   }
 
   getTemplate() {
     return createPointEditTemplate(this._point);
   }
 
-  setSubmitHandler(handler) {
+  setSubmitFormHandler(handler) {
     this.getElement().querySelector(`form`)
       .addEventListener(`submit`, handler);
   }
 
-  setCloseEditButtonClickHandler(handler) {
+  setClickCloseEditButtonHandler(handler) {
     this.getElement().querySelector(`.event__rollup-btn`)
       .addEventListener(`click`, handler);
   }
 
-  setFavoritesButtonClickHandler(handler) {
-    this.getElement().querySelector(`.event__favorite-btn`)
-      .addEventListener(`click`, handler);
+  setChangeFavoriteInputHandler(handler) {
+    this.getElement().querySelector(`.event__favorite-checkbox`)
+      .addEventListener(`change`, handler);
+  }
+
+  recoveryListeners() {
+    return;
+  }
+
+  rerender() {
+    super.rerender();
   }
 }
