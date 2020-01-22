@@ -27,7 +27,7 @@ const createDayTemplate = (date) => {
 
 
 export default class DayComponent extends AbstractComponent {
-  constructor(date = null) {
+  constructor(date) {
     super();
 
     this._date = date ? date : null;
