@@ -36,10 +36,10 @@ export default class PointController {
       document.addEventListener(`keydown`, this._onEscKeyDown);
     });
 
-    this._pointEditComponent.setSubmitHandler(this._onCloseForm);
-    this._pointEditComponent.setCloseEditButtonClickHandler(this._onCloseForm);
+    this._pointEditComponent.setSubmitFormHandler(this._onCloseForm);
+    this._pointEditComponent.setClickCloseEditButtonHandler(this._onCloseForm);
 
-    this._pointEditComponent.setFavoritesButtonClickHandler(() => {
+    this._pointEditComponent.setChangeFavoriteInputHandler(() => {
       this._onDataChange(this, point, Object.assign({}, point, {
         isFavorite: !point.isFavorite,
       }));
