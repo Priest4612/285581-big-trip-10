@@ -132,4 +132,4 @@ const generatePoints = (count) => {
   .map(generatePoint);
 };
 
-export {generatePoints};
+export {generatePoints, generateDescription, generatePhotos};
