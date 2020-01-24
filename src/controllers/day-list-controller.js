@@ -5,8 +5,9 @@ import {render, RenderPosition} from "../utils/render.js";
 import PointController from "./point-controller.js";
 
 export default class DayListController {
-  constructor(container) {
+  constructor(container, onDataChange) {
     this._container = container;
+    this._onDataChange = onDataChange;
 
     this._dateList = null;
   }
@@ -22,10 +23,6 @@ export default class DayListController {
     }
 
     this._renderDay(this._dateList, points);
-    // this._dateList.forEach((date) => {
-    //   this._renderDay(date, points);
-    // })
-
   }
 
   _groupingByDay(points) {
@@ -40,7 +37,7 @@ export default class DayListController {
     render(dayComponent.getElement(), pointListComponent, RenderPosition.BEFOREEND);
 
     points.map((point) => {
-      const pointController = new PointController(pointListComponent.getElement());
+      const pointController = new PointController(pointListComponent.getElement(), this._onDataChange);
       pointController.render(point);
     });
   }

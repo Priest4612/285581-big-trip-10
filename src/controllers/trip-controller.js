@@ -39,7 +39,7 @@ export default class TripController {
 
     const dayListComponent = this._dayListComponent.getElement();
 
-    const dayListController = new DayListController(dayListComponent);
+    const dayListController = new DayListController(dayListComponent, this._onDataChange);
     dayListController.render(this._points, this._isDefaultSorting);
   }
 
