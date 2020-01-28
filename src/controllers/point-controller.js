@@ -57,6 +57,7 @@ export default class PointController {
   setDefaultView() {
     if (this._mode !== Mode.DEFAULT) {
       this._replaceEditToPoint();
+      document.removeEventListener(`keydown`, this._onEscKeyDown);
     }
   }
 
