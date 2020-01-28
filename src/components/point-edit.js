@@ -245,8 +245,7 @@ export default class PointEditComponent extends AbstractSmartComponent {
   }
 
   reset() {
-    const point = this._point;
-    return point;
+    this.rerender();
   }
 
   _onChangeTypePoint() {

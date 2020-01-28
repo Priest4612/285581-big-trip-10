@@ -10,7 +10,7 @@ const Mode = {
 
 
 export default class PointController {
-  constructor(container, onDataChange) {
+  constructor(container, onDataChange, onViewChange) {
     this._container = container;
 
     this._mode = Mode.DEFAULT;
@@ -19,6 +19,7 @@ export default class PointController {
     this._pointEditComponent = null;
 
     this._onDataChange = onDataChange;
+    this._onViewChange = onViewChange;
 
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
     this._onCloseForm = this._onCloseForm.bind(this);
@@ -54,17 +55,21 @@ export default class PointController {
   }
 
   setDefaultView() {
-    if (this._mode !== Mode.Default) {
+    if (this._mode !== Mode.DEFAULT) {
       this._replaceEditToPoint();
     }
   }
 
   _replaceEditToPoint() {
+    this._pointEditComponent.reset();
+
     replace(this._pointComponent, this._pointEditComponent);
     this._mode = Mode.DEFAULT;
   }
 
   _replacePointToEdit() {
+    this._onViewChange();
+
     replace(this._pointEditComponent, this._pointComponent);
     this._mode = Mode.EDIT;
   }
