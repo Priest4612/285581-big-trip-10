@@ -87,8 +87,7 @@ export default class PointComponent extends AbstractComponent {
   }
 
   setOpenEditButtonClickHandler(handler) {
-    this.getElement()
-    .querySelector(`.event__rollup-btn`)
-    .addEventListener(`click`, handler);
+    this.getElement().querySelector(`.event__rollup-btn`)
+      .addEventListener(`click`, handler);
   }
 }

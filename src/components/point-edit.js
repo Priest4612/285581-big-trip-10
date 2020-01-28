@@ -1,6 +1,7 @@
 import {formatDateTime} from '../utils/date.js';
 import {getRandomArrayItem} from '../utils/common.js';
-import AbstractComponent from './abstract-component.js';
+import AbstractSmartComponent from './abstract-smart-component.js';
+import {generateDescription, generatePhotos} from '../mock/point-mock.js';
 
 
 const createTemplateListMarkup = (cb, dataList, group = ``) => {
@@ -8,15 +9,14 @@ const createTemplateListMarkup = (cb, dataList, group = ``) => {
 
   if (group !== ``) {
     const tempArray = dataList.filter((item) => item.group === group);
-    array = array.concat(tempArray);
+    array = [].concat(tempArray);
   } else {
-    array.concat(dataList);
+    array = [].concat(dataList);
   }
 
-  return Array
-  .from(array)
-  .map((item) => cb(item))
-  .join(`\n`);
+  return Array.from(array)
+    .map((item) => cb(item))
+    .join(`\n`);
 };
 
 
@@ -61,10 +61,9 @@ const createOfferListMarkup = (offers) => {
     newArray.push(element);
   }
 
-  return Array
-  .from(newArray)
-  .map((offer) => createOfferItem(offer))
-  .join(`\n`);
+  return Array.from(newArray)
+    .map((offer) => createOfferItem(offer))
+    .join(`\n`);
 };
 
 
@@ -77,12 +76,12 @@ const createPhotoItem = (urlPhoto) => {
 
 const createPhotoListMarkup = (urlPhotoList) => {
   return Array.from(urlPhotoList)
-  .map((urlPhoto) => createPhotoItem(urlPhoto))
-  .join(`\n`);
+    .map((urlPhoto) => createPhotoItem(urlPhoto))
+    .join(`\n`);
 };
 
 
-const createEventEditTemplate = (point) => {
+const createPointEditTemplate = (point) => {
   const {pointList, isFavorite, locationList, dateStart, dateEnd, price, offerList, description, photos} = point;
   const ActivePoint = pointList.filter((it) => it.checked)[0];
   const ActiveLocation = locationList.filter((location) => location.checked)[0];
@@ -193,26 +192,103 @@ const createEventEditTemplate = (point) => {
 };
 
 
-export default class PointEditComponent extends AbstractComponent {
+export default class PointEditComponent extends AbstractSmartComponent {
   constructor(point) {
     super();
 
     this._point = point;
+
+    this._setSubmitFormHandler = null;
+    this._setClickCloseEditButtonHandler = null;
+    this._setChangeFavoriteInputHandler = null;
+
+    this._onChangeTypePoint();
+    this._onChangeLocationPoint();
   }
 
   getTemplate() {
-    return createEventEditTemplate(this._point);
+    return createPointEditTemplate(this._point);
   }
 
-  setSubmitHandler(handler) {
-    this.getElement()
-    .querySelector(`form`)
-    .addEventListener(`submit`, handler);
+  setSubmitFormHandler(handler) {
+    this.getElement().querySelector(`form`)
+      .addEventListener(`submit`, handler);
+
+    this._setSubmitFormHandler = handler;
   }
 
-  setCloseEditButtonClickHandler(handler) {
+  setClickCloseEditButtonHandler(handler) {
+    this.getElement().querySelector(`.event__rollup-btn`)
+      .addEventListener(`click`, handler);
+
+    this._setClickCloseEditButtonHandler = handler;
+  }
+
+  setChangeFavoriteInputHandler(handler) {
+    this.getElement().querySelector(`.event__favorite-checkbox`)
+      .addEventListener(`change`, handler);
+
+    this._setChangeFavoriteInputHandler = handler;
+  }
+
+  recoveryListeners() {
+    this._onChangeTypePoint();
+    this._onChangeLocationPoint();
+
+    this.setSubmitFormHandler(this._setSubmitFormHandler);
+    this.setClickCloseEditButtonHandler(this._setClickCloseEditButtonHandler);
+    this.setChangeFavoriteInputHandler(this._setChangeFavoriteInputHandler);
+  }
+
+  rerender() {
+    super.rerender();
+  }
+
+  reset() {
+    this.rerender();
+  }
+
+  _onChangeTypePoint() {
+    const eventTypeInputs = this.getElement()
+      .querySelectorAll(`.event__type-input`);
+
+    [...eventTypeInputs].forEach((input) => {
+      input.addEventListener(`change`, (evt) => {
+        const newType = evt.target.value;
+
+        const indexNewType = this._point.pointList.findIndex((it) => it.type === newType);
+        const indexCurrentType = this._point.pointList.findIndex((it) => it.checked);
+
+        if (indexNewType === -1) {
+          return;
+        }
+
+        this._point.pointList[indexCurrentType].checked = false;
+        this._point.pointList[indexNewType].checked = true;
+
+        this.rerender();
+      });
+    });
+  }
+
+  _onChangeLocationPoint() {
     this.getElement()
-    .querySelector(`.event__rollup-btn`)
-    .addEventListener(`click`, handler);
+    .querySelector(`.event__input--destination`).addEventListener(`change`, (evt) => {
+      const newCity = evt.target.value;
+
+      const indexNewType = this._point.locationList.findIndex((it) => it.title === newCity);
+      const indexCurrentType = this._point.locationList.findIndex((it) => it.checked);
+
+      if (indexNewType === -1) {
+        return;
+      }
+
+      this._point.locationList[indexCurrentType].checked = false;
+      this._point.locationList[indexNewType].checked = true;
+      this._point.description = generateDescription();
+      this._point.photos = generatePhotos();
+
+      this.rerender();
+    });
   }
 }
