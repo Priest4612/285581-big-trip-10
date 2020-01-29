@@ -2,7 +2,7 @@ import {formatDateTime} from '../utils/date.js';
 import {getRandomArrayItem} from '../utils/common.js';
 import AbstractSmartComponent from './abstract-smart-component.js';
 import {generateDescription, generatePhotos} from '../mock/point-mock.js';
-import flatpickr from 'flatpickr';
+// import flatpickr from 'flatpickr';
 
 
 const createTemplateListMarkup = (cb, dataList, group = ``) => {
@@ -318,7 +318,7 @@ export default class PointEditComponent extends AbstractSmartComponent {
       altFormat: `d/m/y H:i`
     };
 
-    this._flatpickr.from = flatpickr(dateStartElement,
+    this._flatpickr.from = window.flatpickr(dateStartElement,
         Object.assign({},
             options,
             {
@@ -329,7 +329,7 @@ export default class PointEditComponent extends AbstractSmartComponent {
         )
     );
 
-    this._flatpickr.to = flatpickr(dateEndElement,
+    this._flatpickr.to = window.flatpickr(dateEndElement,
         Object.assign({},
             options,
             {
