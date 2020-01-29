@@ -2,6 +2,7 @@ import {formatDateTime} from '../utils/date.js';
 import {getRandomArrayItem} from '../utils/common.js';
 import AbstractSmartComponent from './abstract-smart-component.js';
 import {generateDescription, generatePhotos} from '../mock/point-mock.js';
+import flatpickr from 'flatpickr';
 
 
 const createTemplateListMarkup = (cb, dataList, group = ``) => {
@@ -197,11 +198,13 @@ export default class PointEditComponent extends AbstractSmartComponent {
     super();
 
     this._point = point;
+    this._flatpickr = null;
 
     this._setSubmitFormHandler = null;
     this._setClickCloseEditButtonHandler = null;
     this._setChangeFavoriteInputHandler = null;
 
+    this._applyFlatpickr();
     this._onChangeTypePoint();
     this._onChangeLocationPoint();
   }
@@ -246,6 +249,8 @@ export default class PointEditComponent extends AbstractSmartComponent {
 
   reset() {
     this.rerender();
+
+    this._applyFlatpickr();
   }
 
   _onChangeTypePoint() {
@@ -290,5 +295,49 @@ export default class PointEditComponent extends AbstractSmartComponent {
 
       this.rerender();
     });
+  }
+
+  _applyFlatpickr() {
+    if (this._flatpickr) {
+      this._flatpickr.from.destroy();
+      this._flatpickr.to.destroy();
+      this._flatpickr.from = null;
+      this._flatpickr.to = null;
+    }
+
+    this._flatpickr = {};
+
+    const dateStartElement = this.getElement().querySelector(`#event-start-time-1`);
+    const dateEndElement = this.getElement().querySelector(`#event-end-time-1`);
+
+    const options = {
+      altInput: true,
+      allowInput: true,
+      enableTime: true,
+      minuteIncrement: 1,
+      altFormat: `d/m/y H:i`
+    };
+
+    this._flatpickr.from = flatpickr(dateStartElement,
+        Object.assign({},
+            options,
+            {
+              defaultDate: this._point.dateStart,
+              maxDate: this._point.dateEnd,
+              maxTime: this._point.dateEnd
+            }
+        )
+    );
+
+    this._flatpickr.to = flatpickr(dateEndElement,
+        Object.assign({},
+            options,
+            {
+              defaultDate: this._point.dateStart,
+              minDate: this._point.dateStart,
+              minTime: this._point.dateStart
+            }
+        )
+    );
   }
 }
