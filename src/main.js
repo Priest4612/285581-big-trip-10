@@ -1,11 +1,10 @@
 import {data} from './mock/data.js';
+import {render, RenderPosition} from './utils/render.js';
 import TripInfoElement from './components/trip-info.js';
 import MenuElement from './components/site-menu.js';
 import FilterElement from './components/filter.js';
 import TripController from './controllers/trip-controller.js';
-import {render} from './utils/render.js';
-import {RenderPosition} from './utils/render.js';
-
+import PointsModel from './models/points-model.js';
 
 const calculationTotal = (points) => {
   let total = 0;
@@ -22,6 +21,8 @@ const calculationTotal = (points) => {
 
 
 const points = data;
+const pointsModel = new PointsModel();
+pointsModel.setPoints(points);
 
 const sitePageBodyElement = document.querySelector(`.page-body`);
 const siteHeaderElement = sitePageBodyElement.querySelector(`.page-header`);
@@ -41,5 +42,5 @@ render(headerHiddenElements[1], new FilterElement(), RenderPosition.AFTEREND);
 const siteMainElement = sitePageBodyElement.querySelector(`.page-main`);
 const mainTripEventsElement = siteMainElement.querySelector(`.trip-events`);
 
-const tripController = new TripController(mainTripEventsElement);
-tripController.render(points);
+const tripController = new TripController(mainTripEventsElement, pointsModel);
+tripController.render();
