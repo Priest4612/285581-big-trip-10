@@ -92,7 +92,7 @@ let currentDate = null;
 const START_DAY_POINT = 1;
 const INTERVAL_HOURS = 2;
 
-const generatePoint = () => {
+const generatePoint = (index) => {
   const transfer = groupPoint(cloneArray(TransferList), `transfer`);
   const activities = groupPoint(cloneArray(ActivityList), `activity`);
 
@@ -113,6 +113,7 @@ const generatePoint = () => {
   currentDate = dateDay.dateEnd;
 
   return {
+    id: index,
     pointList,
     isFavorite: Math.random() > 0.5,
     locationList: cityList,
@@ -129,7 +130,7 @@ const generatePoint = () => {
 const generatePoints = (count) => {
   return new Array(count)
   .fill(``)
-  .map(generatePoint);
+  .map((it, index) => generatePoint(index));
 };
 
 export {generatePoints, generateDescription, generatePhotos};
