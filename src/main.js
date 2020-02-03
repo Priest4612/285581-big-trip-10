@@ -2,9 +2,9 @@ import {data} from './mock/data.js';
 import {render, RenderPosition} from './utils/render.js';
 import TripInfoElement from './components/trip-info.js';
 import MenuElement from './components/site-menu.js';
-import FilterElement from './components/filter.js';
 import TripController from './controllers/trip-controller.js';
 import PointsModel from './models/points-model.js';
+import FilterController from './controllers/filter-controller.js';
 
 const calculationTotal = (points) => {
   let total = 0;
@@ -37,7 +37,9 @@ spanTripInfoElement.innerHTML = calculationTotal(points);
 const headerTripControlsElement = siteHeaderElement.querySelector(`.trip-controls`);
 const headerHiddenElements = headerTripControlsElement.querySelectorAll(`.visually-hidden`);
 render(headerHiddenElements[0], new MenuElement(), RenderPosition.AFTEREND);
-render(headerHiddenElements[1], new FilterElement(), RenderPosition.AFTEREND);
+// render(headerHiddenElements[1], new FilterElement(), RenderPosition.AFTEREND);
+const filterController = new FilterController(headerHiddenElements[1], pointsModel);
+filterController.render();
 
 const siteMainElement = sitePageBodyElement.querySelector(`.page-main`);
 const mainTripEventsElement = siteMainElement.querySelector(`.trip-events`);

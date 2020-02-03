@@ -9,7 +9,6 @@ import {render, RenderPosition} from '../utils/render.js';
 import {formatDateTime} from "../utils/date.js";
 
 import PointController from "./point-controller.js";
-import PointsModel from '../models/points-model.js';
 
 const renderPoints = (pointListElement, points, onDataChange, onViewChange) => {
   return points.map((point) => {
@@ -37,13 +36,15 @@ export default class TripController {
     this._onSortTypeChange = this._onSortTypeChange.bind(this);
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
+    this._onFilterChange = this._onFilterChange.bind(this);
 
     this._sortComponent.setSortTypeChangeHandler(this._onSortTypeChange);
+    this._pointsModel.setFilterChangeHandler(this._onFilterChange);
   }
 
   render() {
     const container = this._container;
-    const points = this._pointsModel.getPoints();
+    const points = this._pointsModel.getPointsAll();
 
     if (!points.length) {
       render(container, this._noPointComponent, RenderPosition.BEFOREEND);
@@ -69,7 +70,7 @@ export default class TripController {
 
   _onSortTypeChange(sortType) {
     let sortedPoints = [];
-    const points = this._pointsModel.getPoints();
+    const points = this._pointsModel.getPointsAll();
 
     this._isDefaultSorting = false;
     this._dateList = null;
@@ -88,7 +89,7 @@ export default class TripController {
         break;
     }
 
-    const dayListComponent = this._dayListComponent.getElement(sortedPoints);
+    const dayListComponent = this._dayListComponent.getElement();
     dayListComponent.innerHTML = ``;
 
     if (!this._isDefaultSorting) {
@@ -126,5 +127,17 @@ export default class TripController {
     this._showedPointsControllers.forEach((point) => {
       point.setDefaultView();
     });
+  }
+
+  _onFilterChange() {
+    const dayListComponent = this._dayListComponent.getElement();
+    dayListComponent.innerHTML = ``;
+    this._removePoints();
+    this._renderDay(dayListComponent, null, this._pointsModel.getPoints());
+  }
+
+  _removePoints() {
+    this._showedPointsControllers.forEach((pointController) => pointController.destroy());
+    this._showedPointsControllers = [];
   }
 }

@@ -5,21 +5,21 @@ const createFilterItem = (filterItem) => {
   return (
     `<div class="trip-filters__filter">
       <input
-      id="filter-${filterItem.title}"
+      id="filter-${filterItem.value}"
       class="trip-filters__filter-input  visually-hidden"
       type="radio"
       name="trip-filter"
-      value="-${filterItem.title}"
-      ${filterItem.checked ? `checked` : ``}>
-      <label class="trip-filters__filter-label" for="filter-everything">${filterItem.title}</label>
+      value="${filterItem.value}"
+      ${filterItem.checked}>
+      <label class="trip-filters__filter-label" for="filter-${filterItem.value}" data-filter="${filterItem.value}">${filterItem.value}</label>
     </div>`
   );
 };
 
 
 const createFilterListMurkup = (filterList) => {
-  return Array
-  .from(filterList)
+  return Object
+  .values(filterList)
   .map((filterItem) => {
     return createFilterItem(filterItem);
   }).join(`\n`);
@@ -38,7 +38,22 @@ const createFilterTemplate = () => {
 };
 
 export default class FilterComponent extends AbstractComponent {
+  constructor(filters) {
+    super();
+
+    this._filters = filters;
+  }
+
   getTemplate() {
     return createFilterTemplate();
+  }
+
+  setFilterChangeHandler(handler) {
+    this.getElement().addEventListener(`click`, (evt) => {
+      if (evt.target.tagName === `LABEL`) {
+        const filter = evt.target.dataset.filter;
+        handler(filter);
+      }
+    });
   }
 }

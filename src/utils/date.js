@@ -1,4 +1,5 @@
 import {getRandomInteger} from './common.js';
+import moment from 'moment';
 
 const getRandomHours = (date, intervalHours) => {
   const targetDate = new Date(date);
@@ -15,7 +16,7 @@ export const getRandomDateDay = (referencePoint = null, startDayPoint = 3, inter
 
   if (!referencePoint) {
     const targetDate = new Date();
-    targetDate.setDate(targetDate.getDate() - getRandomInteger(0, startDayPoint));
+    targetDate.setDate(targetDate.getDate() - getRandomInteger(3, startDayPoint));
     dateStart = getRandomHours(targetDate, intervalHours);
     dateEnd = getRandomHours(dateStart, intervalHours);
   } else {
@@ -34,23 +35,14 @@ export const castTimeFormat = (value) => {
 
 
 export const formatTime = (date) => {
-  const hours = castTimeFormat(date.getHours());
-  const minutes = castTimeFormat(date.getMinutes());
-
-  return `${hours}:${minutes}`;
+  return moment(date).format(`HH:mm`);
 };
 
 
 export const formatDateTime = (date) => {
-  const yyyy = date.getFullYear();
-  const mm = castTimeFormat(date.getMonth() + 1);
-  const dd = castTimeFormat(date.getDate());
-  const hours = castTimeFormat(date.getHours());
-  const minutes = castTimeFormat(date.getMinutes());
-
   return {
-    date: `${yyyy}-${mm}-${dd}`,
-    dateTimeEdit: `${dd}/${mm}/${String(yyyy).slice(2)} ${hours}:${minutes}`,
-    dateTimePoint: `${yyyy}-${mm}-${dd}T${hours}:${minutes}`,
+    date: moment(date).format(`YYYY-MM-DD`),
+    dateTimeEdit: moment(date).format(`DD/MM/YY HH:mm`),
+    dateTimePoint: moment(date).format(`YYYY-MM-DDTHH:mm:ss`),
   };
 };

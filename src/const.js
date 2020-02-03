@@ -39,20 +39,20 @@ export const MenuList = [
   {title: `Stats`, active: false}
 ];
 
-export const FilterList = [
-  {
-    title: `everything`,
-    checked: true,
+export const FilterList = {
+  EVERYTHING: {
+    value: `everything`,
+    checked: `checked`
   },
-  {
-    title: `future`,
-    checked: false,
+  FUTURE: {
+    value: `future`,
+    checked: ``
   },
-  {
-    title: `past`,
-    checked: false,
-  }
-];
+  PAST: {
+    value: `past`,
+    checked: ``
+  },
+};
 
 export const MonthList = [
   `Jan`,
